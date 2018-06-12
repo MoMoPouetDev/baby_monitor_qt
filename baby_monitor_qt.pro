@@ -1,3 +1,7 @@
+QT += widgets
+QT += multimedia
+QT += multimediawidgets
+
 HEADERS += \
     mainwindow.h
 
