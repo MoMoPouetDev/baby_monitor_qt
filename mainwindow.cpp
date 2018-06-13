@@ -1,5 +1,7 @@
 #include <QString>
 #include <stdio.h>
+#include <QDebug>
+
 #include "mainwindow.h"
 
 MainWindow::MainWindow() : QWidget()
@@ -23,22 +25,50 @@ MainWindow::MainWindow() : QWidget()
     m_buttonDown -> setFixedWidth(80);
 
     m_progressSound = new QProgressBar(this);
-    m_progressSound -> setFixedSize(30,160);
-    m_progressSound -> move(405, 50);
+    m_progressSound -> setGeometry(405, 50, 30, 160);
     m_progressSound -> setOrientation(Qt::Vertical);
-    m_progressSound -> setValue(50);
+    m_progressSound -> setValue(m_soundValue);
     m_progressSound -> setStyleSheet(m_style);
     m_progressSound -> setTextVisible(false);
 
-    m_player = new QMediaPlayer(this);
-    m_player -> setMedia(QUrl("/home/morganvenandy/test.mp4"));
+    QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
+    QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
+    QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
+    QObject::connect(m_buttonPower, SIGNAL(clicked()), this, SLOT(buttonPower()));
 
+    m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     m_video = new QVideoWidget(this);
+
+    m_player -> setMedia(QUrl::fromLocalFile("/Users/morganvenandy/test1.mp4"));
     m_player -> setVideoOutput(m_video);
-    m_video -> move(10, 10);
-    m_video -> setFixedSize(320, 280);
-    printf("ok");
-    if(m_player->isVideoAvailable()){
-        m_player -> play();
+    m_video -> setGeometry(10,10, 360, 280);
+    m_player -> play();
+}
+
+MainWindow::~MainWindow()
+{
+
+}
+void MainWindow::buttonPlus(void)
+{
+    if(m_soundValue <= SOUND_MAX)
+    {
+        m_soundValue += 10;
+        m_progressSound->setValue(m_soundValue);
     }
+}
+
+void MainWindow::buttonMinus(void)
+{
+
+}
+
+void MainWindow::buttonMute(void)
+{
+
+}
+
+void MainWindow::buttonPower(void)
+{
+
 }

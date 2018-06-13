@@ -1,5 +1,8 @@
 #include <QApplication>
 #include <QPushButton>
+#include <QMediaPlayer>
+#include <QVideoWidget>
+#include <QtWidgets>
 
 #include "mainwindow.h"
 
