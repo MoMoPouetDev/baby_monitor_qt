@@ -3,6 +3,11 @@
 #include <QDebug>
 #include <QAudioProbe>
 #include <math.h>
+
+#include <QPropertyAnimation>
+#include <QEasingCurve>
+#include <QThread>
+
 #include "mainwindow.h"
 
 
@@ -52,17 +57,18 @@ MainWindow::MainWindow() : QWidget()
     m_progressSound->setStyleSheet(getStyle());
     m_progressSound->setTextVisible(false);
 
-    m_progressLeft = new QProgressBar(this);
+    /*m_progressLeft = new QProgressBar(this);
     m_progressLeft->setGeometry(10, 200, 200, 20);
-    //m_progressLeft->setMinimum(74);
-    //m_progressLeft->setMaximum(100);
-    m_progressLeft->setValue(0);
+    m_progressLeft->setMinimum(20);
+    m_progressLeft->setMaximum(100);
+    m_progressLeft->setValue(0);*/
 
     m_progressRight = new QProgressBar(this);
     m_progressRight->setGeometry(10, 250, 200, 20);
-    //m_progressRight->setMinimum(20);
-    //m_progressRight->setMaximum(100);
+    m_progressRight->setMinimum(20);
+    m_progressRight->setMaximum(100);
     m_progressRight->setValue(0);
+    m_progressRight->setStyleSheet(m_style2);
 
     QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
@@ -85,6 +91,13 @@ MainWindow::MainWindow() : QWidget()
     QAudioProbe *probe = new QAudioProbe(this);
     QObject::connect(probe, SIGNAL(audioBufferProbed(QAudioBuffer)), this, SLOT(processBuffer(const QAudioBuffer&)));
     probe->setSource(m_player);
+
+    anim = new QPropertyAnimation(m_progressRight,"value");
+    anim->setDuration(1000);
+    anim->setStartValue(0);
+    anim->setEndValue(100);
+    anim->setEasingCurve(QEasingCurve::InQuart);
+    anim->start();
 }
 
 MainWindow::~MainWindow()
@@ -187,11 +200,25 @@ void MainWindow::processBuffer(const QAudioBuffer& buffer)
     //qDebug() << decibel << "dB" << endl;
     //if(decibel<-20.0) decibel=-20.0;*/
     QVector<qreal> levels = getBufferLevels(buffer);
-    qDebug() << 20*log10(levels[0]);
-    decibelRight = 100 + (20*log10(levels[0]));
-    decibelLeft = 100 + (20*log10(levels[1]));
+    qDebug() << levels[0];
+    if(levels[0] > 0)
+    {
+        decibelRight = 100 + (20*log10(levels[0]));
+    }
+    else
+    {
+        decibelRight = 0;
+    }
+    //decibelLeft = 100 + (20*log10(levels[1]));
+
+    anim->setStartValue(previousValueRight);
+    anim->setEndValue(decibelRight);
+    anim->start();
     m_progressRight->setValue(decibelRight);
-    m_progressLeft->setValue(decibelLeft);
+    //m_progressLeft->setValue(decibelRight);
+
+    previousValueRight = decibelRight;
+    //previousValueLeft = decibelLeft;
 }
 
 // This function returns the maximum possible sample value for a given audio format

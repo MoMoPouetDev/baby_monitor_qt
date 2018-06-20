@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QAudioBuffer>
 #include <QVector>
+#include <QPropertyAnimation>
 
 #ifdef __APPLE__
     #define VIDEO_URL   "/Users/morganvenandy/test1.mp4"
@@ -52,7 +53,9 @@ class MainWindow : public QWidget
     void processBuffer(const QAudioBuffer&);
 
     private:
+    float previousValueRight = 0, previousValueLeft = 0;
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
+            m_style2 = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: qlineargradient(x0: 0, x2: 1, stop: 0 green, stop: 0.6 green, stop: 0.8 orange, stop: 1 red)}",
             m_reboot = "reboot",
             m_pathIconPower = PATH_ICON_POWER_OFF,
             m_pathIconMute = PATH_ICON_MUTE,
@@ -75,6 +78,7 @@ class MainWindow : public QWidget
     QMediaPlayer *m_player;
     QVideoWidget *m_video;
     QProcess *m_process;
+    QPropertyAnimation *anim;
 
     QString getStyle()
     {
