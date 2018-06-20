@@ -1,6 +1,16 @@
 #include <stdio.h>
 #include <QSize>
+#include <QDebug>
+#include <QAudioProbe>
+#include <math.h>
 #include "mainwindow.h"
+
+
+static qreal getPeakValue(const QAudioFormat &format);
+static QVector<qreal> getBufferLevels(const QAudioBuffer &buffer);
+
+template <class T>
+static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels);
 
 MainWindow::MainWindow() : QWidget()
 {
@@ -42,6 +52,18 @@ MainWindow::MainWindow() : QWidget()
     m_progressSound->setStyleSheet(getStyle());
     m_progressSound->setTextVisible(false);
 
+    m_progressLeft = new QProgressBar(this);
+    m_progressLeft->setGeometry(10, 200, 200, 20);
+    //m_progressLeft->setMinimum(74);
+    //m_progressLeft->setMaximum(100);
+    m_progressLeft->setValue(0);
+
+    m_progressRight = new QProgressBar(this);
+    m_progressRight->setGeometry(10, 250, 200, 20);
+    //m_progressRight->setMinimum(20);
+    //m_progressRight->setMaximum(100);
+    m_progressRight->setValue(0);
+
     QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
     QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
@@ -54,11 +76,15 @@ MainWindow::MainWindow() : QWidget()
 
     m_player->setMedia(QUrl::fromLocalFile(VIDEO_URL));
     m_player->setVideoOutput(m_video);
-    m_video->setGeometry(10,10, 360, 280);
+    m_video->setGeometry(10,10, 260, 180);
     m_player->play();
-    m_player->setVolume(50);
+    m_player->setVolume(100);
 
     m_process = new QProcess(this);
+
+    QAudioProbe *probe = new QAudioProbe(this);
+    QObject::connect(probe, SIGNAL(audioBufferProbed(QAudioBuffer)), this, SLOT(processBuffer(const QAudioBuffer&)));
+    probe->setSource(m_player);
 }
 
 MainWindow::~MainWindow()
@@ -127,6 +153,7 @@ void MainWindow::muteVolumeBar(bool muted)
     {
         m_progressSound->setValue(SOUND_MIN);
         m_buttonSound->setIcon(m_iconMute);
+        qDebug()<<m_player->isAudioAvailable();
     }
     else
     {
@@ -134,3 +161,140 @@ void MainWindow::muteVolumeBar(bool muted)
         m_buttonSound->setIcon(m_iconNomute);
     }
 }
+
+void MainWindow::processBuffer(const QAudioBuffer& buffer)
+{
+    float decibelRight, decibelLeft;
+    qDebug() << buffer.byteCount();
+    qDebug() << sizeof(buffer);
+    qDebug() << buffer.frameCount();
+    qDebug() << buffer.sampleCount();
+
+    /*QAudioBuffer::S8U *frames = buffer.data<QAudioBuffer::S8U>();
+    for (int i=0; i < buffer.frameCount(); i++)
+    {
+        //qDebug() << frames[i].right << "right" << endl;
+        //qDebug() << frames[i].left<< "left" << endl;
+
+        levelRight += frames[i].right;
+        //decibel = 20*log10(levelRight);
+        //qDebug() << decibel << "dB" << endl;
+        //if(decibel<-20.0) decibel=-20.0;
+        //progress->setValue(decibel);
+    }
+    moyenne = abs(levelRight/buffer.frameCount());
+    decibel = 100 + 20*log10(moyenne/255);
+    //qDebug() << decibel << "dB" << endl;
+    //if(decibel<-20.0) decibel=-20.0;*/
+    QVector<qreal> levels = getBufferLevels(buffer);
+    qDebug() << 20*log10(levels[0]);
+    decibelRight = 100 + (20*log10(levels[0]));
+    decibelLeft = 100 + (20*log10(levels[1]));
+    m_progressRight->setValue(decibelRight);
+    m_progressLeft->setValue(decibelLeft);
+}
+
+// This function returns the maximum possible sample value for a given audio format
+qreal getPeakValue(const QAudioFormat& format)
+{
+    // Note: Only the most common sample formats are supported
+    if (!format.isValid())
+        return qreal(0);
+
+    if (format.codec() != "audio/pcm")
+        return qreal(0);
+
+    switch (format.sampleType()) {
+    case QAudioFormat::Unknown:
+        break;
+    case QAudioFormat::Float:
+        if (format.sampleSize() != 32) // other sample formats are not supported
+            return qreal(0);
+        return qreal(1.00003);
+    case QAudioFormat::SignedInt:
+        if (format.sampleSize() == 32)
+            return qreal(INT_MAX);
+        if (format.sampleSize() == 16)
+            return qreal(SHRT_MAX);
+        if (format.sampleSize() == 8)
+            return qreal(CHAR_MAX);
+        break;
+    case QAudioFormat::UnSignedInt:
+        if (format.sampleSize() == 32)
+            return qreal(UINT_MAX);
+        if (format.sampleSize() == 16)
+            return qreal(USHRT_MAX);
+        if (format.sampleSize() == 8)
+            return qreal(UCHAR_MAX);
+        break;
+    }
+
+    return qreal(0);
+}
+QVector<qreal> getBufferLevels(const QAudioBuffer& buffer)
+{
+    QVector<qreal> values;
+
+    if (!buffer.format().isValid() || buffer.format().byteOrder() != QAudioFormat::LittleEndian)
+        return values;
+
+    if (buffer.format().codec() != "audio/pcm")
+        return values;
+
+    int channelCount = buffer.format().channelCount();
+    values.fill(0, channelCount);
+    qreal peak_value = getPeakValue(buffer.format());
+    if (qFuzzyCompare(peak_value, qreal(0)))
+        return values;
+
+    switch (buffer.format().sampleType()) {
+    case QAudioFormat::Unknown:
+    case QAudioFormat::UnSignedInt:
+        if (buffer.format().sampleSize() == 32)
+            values = getBufferLevels(buffer.constData<quint32>(), buffer.frameCount(), channelCount);
+        if (buffer.format().sampleSize() == 16)
+            values = getBufferLevels(buffer.constData<quint16>(), buffer.frameCount(), channelCount);
+        if (buffer.format().sampleSize() == 8)
+            values = getBufferLevels(buffer.constData<quint8>(), buffer.frameCount(), channelCount);
+        for (int i = 0; i < values.size(); ++i)
+            values[i] = qAbs(values.at(i) - peak_value / 2) / (peak_value / 2);
+        break;
+    case QAudioFormat::Float:
+        if (buffer.format().sampleSize() == 32) {
+            values = getBufferLevels(buffer.constData<float>(), buffer.frameCount(), channelCount);
+            for (int i = 0; i < values.size(); ++i)
+                values[i] /= peak_value;
+        }
+        break;
+    case QAudioFormat::SignedInt:
+        if (buffer.format().sampleSize() == 32)
+            values = getBufferLevels(buffer.constData<qint32>(), buffer.frameCount(), channelCount);
+        if (buffer.format().sampleSize() == 16)
+            values = getBufferLevels(buffer.constData<qint16>(), buffer.frameCount(), channelCount);
+        if (buffer.format().sampleSize() == 8)
+            values = getBufferLevels(buffer.constData<qint8>(), buffer.frameCount(), channelCount);
+        for (int i = 0; i < values.size(); ++i)
+            values[i] /= peak_value;
+        break;
+    }
+
+    return values;
+}
+
+template <class T>
+QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
+{
+    QVector<qreal> max_values;
+    max_values.fill(0, channels);
+
+    for (int i = 0; i < frames; ++i) {
+        for (int j = 0; j < channels; ++j) {
+            qreal value = qAbs(qreal(buffer[i * channels + j]));
+            if (value > max_values.at(j))
+                max_values.replace(j, value);
+        }
+    }
+
+    return max_values;
+}
+

@@ -11,6 +11,8 @@
 #include <QVideoWidget>
 #include <QMessageBox>
 #include <QProcess>
+#include <QAudioBuffer>
+#include <QVector>
 
 #ifdef __APPLE__
     #define VIDEO_URL   "/Users/morganvenandy/test1.mp4"
@@ -20,10 +22,12 @@
     #define PATH_ICON_SOUND_UP "/Users/morganvenandy/baby_monitor_qt/images/soundUp.png"
     #define PATH_ICON_SOUND_DOWN "/Users/morganvenandy/baby_monitor_qt/images/soundDown.png"
 #elif __linux__
-    #define VIDEO_URL   "/home/morgan/test.mp4"
-    #define PATH_ICON_POWER "/home/morgan/git/baby_monitor_qt/images/power.png"
-    #define PATH_ICON_MUTE "/home/morgan/git/baby_monitor_qt/images/Sound.png"
-    #define PATH_ICON_NOMUTE "/home/morgan/git/baby_monitor_qt/images/Sound1.png"
+    #define VIDEO_URL   "/home/morgan/test1.mp4"
+#define PATH_ICON_POWER_OFF "/home/morgan/git/baby_monitor_qt/images/powerOff.png"
+#define PATH_ICON_MUTE "/home/morgan/git/baby_monitor_qt/images/soundMute.png"
+#define PATH_ICON_NOMUTE "/home/morgan/git/baby_monitor_qt/images/soundNoMute.png"
+#define PATH_ICON_SOUND_UP "/home/morgan/git/baby_monitor_qt/images/soundUp.png"
+#define PATH_ICON_SOUND_DOWN "/home/morgan/git/baby_monitor_qt/images/soundDown.png"
 #endif
 
 #define SOUND_MAX       100
@@ -45,6 +49,7 @@ class MainWindow : public QWidget
     void buttonPower(void);
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
+    void processBuffer(const QAudioBuffer&);
 
     private:
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
@@ -64,7 +69,9 @@ class MainWindow : public QWidget
                 *m_buttonUp,
                 *m_buttonDown,
                 *m_buttonSound;
-    QProgressBar *m_progressSound;
+    QProgressBar *m_progressSound,
+                *m_progressLeft,
+                *m_progressRight;
     QMediaPlayer *m_player;
     QVideoWidget *m_video;
     QProcess *m_process;
