@@ -57,18 +57,26 @@ MainWindow::MainWindow() : QWidget()
     m_progressSound->setStyleSheet(getStyle());
     m_progressSound->setTextVisible(false);
 
-    /*m_progressLeft = new QProgressBar(this);
-    m_progressLeft->setGeometry(10, 200, 200, 20);
-    m_progressLeft->setMinimum(20);
-    m_progressLeft->setMaximum(100);
-    m_progressLeft->setValue(0);*/
+    m_progressLow = new QProgressBar(this);
+    m_progressLow->setGeometry(10, 250, 120, 30);
+    m_progressLow->setMinimum(MIN_VALUE_LOW);
+    m_progressLow->setMaximum(MAX_VALUE_LOW);
+    m_progressLow->setValue(0);
+    m_progressLow->setStyleSheet(m_styleLow);
 
-    m_progressRight = new QProgressBar(this);
-    m_progressRight->setGeometry(10, 250, 200, 20);
-    m_progressRight->setMinimum(20);
-    m_progressRight->setMaximum(100);
-    m_progressRight->setValue(0);
-    m_progressRight->setStyleSheet(m_style2);
+    m_progressMiddle = new QProgressBar(this);
+    m_progressMiddle->setGeometry(127, 250, 60, 30);
+    m_progressMiddle->setMinimum(MIN_VALUE_MIDDLE);
+    m_progressMiddle->setMaximum(MAX_VALUE_MIDDLE);
+    m_progressMiddle->setValue(0);
+    m_progressMiddle->setStyleSheet(m_styleMiddle);
+
+    m_progressHigh = new QProgressBar(this);
+    m_progressHigh->setGeometry(184, 250, 20, 30);
+    m_progressHigh->setMinimum(MIN_VALUE_HIGH);
+    m_progressHigh->setMaximum(MAX_VALUE_HIGH);
+    m_progressHigh->setValue(0);
+    m_progressHigh->setStyleSheet(m_styleHigh);
 
     QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
@@ -85,6 +93,7 @@ MainWindow::MainWindow() : QWidget()
     m_video->setGeometry(10,10, 260, 180);
     m_player->play();
     m_player->setVolume(100);
+    m_progressSound->setValue(m_player->volume());
 
     m_process = new QProcess(this);
 
@@ -92,7 +101,7 @@ MainWindow::MainWindow() : QWidget()
     QObject::connect(probe, SIGNAL(audioBufferProbed(QAudioBuffer)), this, SLOT(processBuffer(const QAudioBuffer&)));
     probe->setSource(m_player);
 
-    anim = new QPropertyAnimation(m_progressRight,"value");
+    anim = new QPropertyAnimation(m_progressLow,"value");
     anim->setDuration(1000);
     anim->setStartValue(0);
     anim->setEndValue(100);
@@ -177,28 +186,12 @@ void MainWindow::muteVolumeBar(bool muted)
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
 {
-    float decibelRight, decibelLeft;
+    float decibelRight;
     qDebug() << buffer.byteCount();
     qDebug() << sizeof(buffer);
     qDebug() << buffer.frameCount();
     qDebug() << buffer.sampleCount();
 
-    /*QAudioBuffer::S8U *frames = buffer.data<QAudioBuffer::S8U>();
-    for (int i=0; i < buffer.frameCount(); i++)
-    {
-        //qDebug() << frames[i].right << "right" << endl;
-        //qDebug() << frames[i].left<< "left" << endl;
-
-        levelRight += frames[i].right;
-        //decibel = 20*log10(levelRight);
-        //qDebug() << decibel << "dB" << endl;
-        //if(decibel<-20.0) decibel=-20.0;
-        //progress->setValue(decibel);
-    }
-    moyenne = abs(levelRight/buffer.frameCount());
-    decibel = 100 + 20*log10(moyenne/255);
-    //qDebug() << decibel << "dB" << endl;
-    //if(decibel<-20.0) decibel=-20.0;*/
     QVector<qreal> levels = getBufferLevels(buffer);
     qDebug() << levels[0];
     if(levels[0] > 0)
@@ -209,16 +202,12 @@ void MainWindow::processBuffer(const QAudioBuffer& buffer)
     {
         decibelRight = 0;
     }
-    //decibelLeft = 100 + (20*log10(levels[1]));
-
     anim->setStartValue(previousValueRight);
     anim->setEndValue(decibelRight);
     anim->start();
-    m_progressRight->setValue(decibelRight);
-    //m_progressLeft->setValue(decibelRight);
+    m_progressLow->setValue(decibelRight);
 
     previousValueRight = decibelRight;
-    //previousValueLeft = decibelLeft;
 }
 
 // This function returns the maximum possible sample value for a given audio format

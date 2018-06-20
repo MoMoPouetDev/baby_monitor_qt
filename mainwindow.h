@@ -35,6 +35,13 @@
 #define SOUND_MIN       0
 #define SOUND_MARGIN    10
 
+#define MIN_VALUE_LOW   20
+#define MAX_VALUE_LOW   60
+#define MIN_VALUE_MIDDLE    60
+#define MAX_VALUE_MIDDLE    90
+#define MIN_VALUE_HIGH  90
+#define MAX_VALUE_HIGH  100
+
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -55,7 +62,9 @@ class MainWindow : public QWidget
     private:
     float previousValueRight = 0, previousValueLeft = 0;
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
-            m_style2 = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: qlineargradient(x0: 0, x2: 1, stop: 0 green, stop: 0.6 green, stop: 0.8 orange, stop: 1 red)}",
+            m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
+            m_styleMiddle = "QProgressBar {border-top: 2px solid grey; border-bottom: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: orange; width: 3px; margin: 0.5px;}",
+            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-bottom: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: red; width: 3px; margin: 0.5px;}",
             m_reboot = "reboot",
             m_pathIconPower = PATH_ICON_POWER_OFF,
             m_pathIconMute = PATH_ICON_MUTE,
@@ -73,8 +82,9 @@ class MainWindow : public QWidget
                 *m_buttonDown,
                 *m_buttonSound;
     QProgressBar *m_progressSound,
-                *m_progressLeft,
-                *m_progressRight;
+                *m_progressLow,
+                *m_progressMiddle,
+                *m_progressHigh;
     QMediaPlayer *m_player;
     QVideoWidget *m_video;
     QProcess *m_process;
