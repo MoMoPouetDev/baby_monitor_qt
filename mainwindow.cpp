@@ -58,25 +58,28 @@ MainWindow::MainWindow() : QWidget()
     m_progressSound->setTextVisible(false);
 
     m_progressLow = new QProgressBar(this);
-    m_progressLow->setGeometry(10, 250, 120, 30);
+    m_progressLow->setGeometry(10, 270, 240, 30);
     m_progressLow->setMinimum(MIN_VALUE_LOW);
     m_progressLow->setMaximum(MAX_VALUE_LOW);
     m_progressLow->setValue(0);
     m_progressLow->setStyleSheet(m_styleLow);
+    m_progressLow->setTextVisible(false);
 
     m_progressMiddle = new QProgressBar(this);
-    m_progressMiddle->setGeometry(127, 250, 60, 30);
+    m_progressMiddle->setGeometry(247, 270, 120, 30);
     m_progressMiddle->setMinimum(MIN_VALUE_MIDDLE);
     m_progressMiddle->setMaximum(MAX_VALUE_MIDDLE);
     m_progressMiddle->setValue(0);
     m_progressMiddle->setStyleSheet(m_styleMiddle);
+    m_progressMiddle->setTextVisible(false);
 
     m_progressHigh = new QProgressBar(this);
-    m_progressHigh->setGeometry(184, 250, 20, 30);
+    m_progressHigh->setGeometry(364, 270, 40, 30);
     m_progressHigh->setMinimum(MIN_VALUE_HIGH);
     m_progressHigh->setMaximum(MAX_VALUE_HIGH);
     m_progressHigh->setValue(0);
     m_progressHigh->setStyleSheet(m_styleHigh);
+    m_progressHigh->setTextVisible(false);
 
     QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
@@ -90,23 +93,37 @@ MainWindow::MainWindow() : QWidget()
 
     m_player->setMedia(QUrl::fromLocalFile(VIDEO_URL));
     m_player->setVideoOutput(m_video);
-    m_video->setGeometry(10,10, 260, 180);
+    m_video->setGeometry(10, 13, 380, 214);
     m_player->play();
     m_player->setVolume(100);
     m_progressSound->setValue(m_player->volume());
 
     m_process = new QProcess(this);
 
-    QAudioProbe *probe = new QAudioProbe(this);
-    QObject::connect(probe, SIGNAL(audioBufferProbed(QAudioBuffer)), this, SLOT(processBuffer(const QAudioBuffer&)));
-    probe->setSource(m_player);
+    m_probe = new QAudioProbe(this);
+    QObject::connect(m_probe, SIGNAL(audioBufferProbed(QAudioBuffer)), this, SLOT(processBuffer(const QAudioBuffer&)));
+    m_probe->setSource(m_player);
 
-    anim = new QPropertyAnimation(m_progressLow,"value");
-    anim->setDuration(1000);
-    anim->setStartValue(0);
-    anim->setEndValue(100);
-    anim->setEasingCurve(QEasingCurve::InQuart);
-    anim->start();
+    m_animationBarLow = new QPropertyAnimation(m_progressLow,"Low");
+    m_animationBarLow->setDuration(1000);
+    m_animationBarLow->setStartValue(0);
+    m_animationBarLow->setEndValue(100);
+    m_animationBarLow->setEasingCurve(QEasingCurve::InQuad);
+    m_animationBarLow->start();
+
+    m_animationBarMiddle = new QPropertyAnimation(m_progressMiddle,"Middle");
+    m_animationBarMiddle->setDuration(1000);
+    m_animationBarMiddle->setStartValue(0);
+    m_animationBarMiddle->setEndValue(100);
+    m_animationBarMiddle->setEasingCurve(QEasingCurve::InQuad);
+    m_animationBarMiddle->start();
+
+    m_animationBarHigh = new QPropertyAnimation(m_progressHigh,"High");
+    m_animationBarHigh->setDuration(1000);
+    m_animationBarHigh->setStartValue(0);
+    m_animationBarHigh->setEndValue(100);
+    m_animationBarHigh->setEasingCurve(QEasingCurve::InQuad);
+    m_animationBarHigh->start();
 }
 
 MainWindow::~MainWindow()
@@ -160,7 +177,7 @@ void MainWindow::buttonPower(void)
     if(ret == QMessageBox::Yes)
     {
         //ShutDown
-        m_process->start(getReboot());
+        m_process->startDetached(getReboot());
     }
 }
 
@@ -186,28 +203,56 @@ void MainWindow::muteVolumeBar(bool muted)
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
 {
-    float decibelRight;
-    qDebug() << buffer.byteCount();
-    qDebug() << sizeof(buffer);
-    qDebug() << buffer.frameCount();
-    qDebug() << buffer.sampleCount();
+    float decibel, decibelLow, decibelMiddle, decibelHigh;
 
     QVector<qreal> levels = getBufferLevels(buffer);
-    qDebug() << levels[0];
-    if(levels[0] > 0)
+
+    decibel = 100 + (20*log10(levels[0]));
+    if(decibel <= MIN_VALUE_LOW)
     {
-        decibelRight = 100 + (20*log10(levels[0]));
+        decibelLow = MIN_VALUE_LOW;
+        decibelMiddle = MIN_VALUE_MIDDLE;
+        decibelHigh = MIN_VALUE_HIGH;
+    }
+    else if(decibel > MIN_VALUE_LOW && decibel < MAX_VALUE_LOW)
+    {
+        decibelLow = decibel;
+        decibelMiddle = MIN_VALUE_MIDDLE;
+        decibelHigh = MIN_VALUE_HIGH;
+    }
+    else if(decibel >= MIN_VALUE_MIDDLE && decibel < MAX_VALUE_MIDDLE)
+    {
+        decibelLow = MAX_VALUE_LOW;
+        decibelMiddle = decibel;
+        decibelHigh = MIN_VALUE_HIGH;
+    }
+    else if(decibel >= MIN_VALUE_HIGH && decibel <= MAX_VALUE_HIGH)
+    {
+        decibelLow = MAX_VALUE_LOW;
+        decibelMiddle = MAX_VALUE_MIDDLE;
+        decibelHigh = decibel;
     }
     else
     {
-        decibelRight = 0;
+        decibelLow = MAX_VALUE_LOW;
+        decibelMiddle = MAX_VALUE_MIDDLE;
+        decibelHigh = MAX_VALUE_HIGH;
     }
-    anim->setStartValue(previousValueRight);
-    anim->setEndValue(decibelRight);
-    anim->start();
-    m_progressLow->setValue(decibelRight);
 
-    previousValueRight = decibelRight;
+    m_animationBarLow->setStartValue(previousValueRight);
+    m_animationBarLow->setEndValue(decibel);
+    m_animationBarLow->start();
+    m_animationBarMiddle->setStartValue(previousValueRight);
+    m_animationBarMiddle->setEndValue(decibel);
+    m_animationBarMiddle->start();
+    m_animationBarHigh->setStartValue(previousValueRight);
+    m_animationBarHigh->setEndValue(decibel);
+    m_animationBarHigh->start();
+    m_progressLow->setValue(decibelLow);
+    m_progressMiddle->setValue(decibelMiddle);
+    m_progressHigh->setValue(decibelHigh);
+
+    previousValueRight = decibel;
 }
 
 // This function returns the maximum possible sample value for a given audio format

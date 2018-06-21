@@ -14,6 +14,7 @@
 #include <QAudioBuffer>
 #include <QVector>
 #include <QPropertyAnimation>
+#include <QAudioProbe>
 
 #ifdef __APPLE__
     #define VIDEO_URL   "/Users/morganvenandy/test1.mp4"
@@ -62,10 +63,10 @@ class MainWindow : public QWidget
     private:
     float previousValueRight = 0, previousValueLeft = 0;
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
-            m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
-            m_styleMiddle = "QProgressBar {border-top: 2px solid grey; border-bottom: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: orange; width: 3px; margin: 0.5px;}",
-            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-bottom: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: red; width: 3px; margin: 0.5px;}",
-            m_reboot = "reboot",
+            m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-top-left-radius: 5px; border-bottom-left-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
+            m_styleMiddle = "QProgressBar {border-top: 2px solid grey; border-bottom: 2px solid grey;} QProgressBar::chunk {background-color: orange; width: 3px; margin: 0.5px;}",
+            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-bottom: 2px solid grey; border-top-right-radius: 5px; border-bottom-right-radius: 5px;} QProgressBar::chunk {background-color: red; width: 3px; margin: 0.5px;}",
+            m_reboot = "/sbin/reboot",
             m_pathIconPower = PATH_ICON_POWER_OFF,
             m_pathIconMute = PATH_ICON_MUTE,
             m_pathIconNomute = PATH_ICON_NOMUTE,
@@ -88,8 +89,10 @@ class MainWindow : public QWidget
     QMediaPlayer *m_player;
     QVideoWidget *m_video;
     QProcess *m_process;
-    QPropertyAnimation *anim;
-
+    QPropertyAnimation *m_animationBarLow,
+                        *m_animationBarMiddle,
+                        *m_animationBarHigh;
+    QAudioProbe *m_probe;
     QString getStyle()
     {
         return m_style;
