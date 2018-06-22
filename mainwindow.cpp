@@ -1,12 +1,7 @@
 #include <stdio.h>
-#include <QSize>
 #include <QDebug>
-#include <QAudioProbe>
 #include <math.h>
-
-#include <QPropertyAnimation>
 #include <QEasingCurve>
-#include <QThread>
 
 #include "mainwindow.h"
 
@@ -20,6 +15,16 @@ static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
 MainWindow::MainWindow() : QWidget()
 {
     this->setFixedSize(480, 320);
+
+    m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
+
+    m_video = new QVideoWidget(this);
+
+    m_player->setMedia(QUrl::fromLocalFile(VIDEO_URL));
+    m_player->setVideoOutput(m_video);
+    m_video->setGeometry(10, 13, 380, 214);
+    m_player->play();
+    m_player->setVolume(50);
 
     m_buttonPower = new QPushButton(this);
     m_buttonPower->setFlat(true);
@@ -53,7 +58,7 @@ MainWindow::MainWindow() : QWidget()
     m_progressSound = new QProgressBar(this);
     m_progressSound->setGeometry(415, 50, 30, 160);
     m_progressSound->setOrientation(Qt::Vertical);
-    m_progressSound->setValue(0);
+    m_progressSound->setValue(m_player->volume());
     m_progressSound->setStyleSheet(getStyle());
     m_progressSound->setTextVisible(false);
 
@@ -86,17 +91,8 @@ MainWindow::MainWindow() : QWidget()
     QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
     QObject::connect(m_buttonPower, SIGNAL(clicked()), this, SLOT(buttonPower()));
 
-    m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     QObject::connect(m_player, SIGNAL(volumeChanged(int)), this, SLOT(changeVolumeBar(int)));
     QObject::connect(m_player, SIGNAL(mutedChanged(bool)), this, SLOT(muteVolumeBar(bool)));
-    m_video = new QVideoWidget(this);
-
-    m_player->setMedia(QUrl::fromLocalFile(VIDEO_URL));
-    m_player->setVideoOutput(m_video);
-    m_video->setGeometry(10, 13, 380, 214);
-    m_player->play();
-    m_player->setVolume(100);
-    m_progressSound->setValue(m_player->volume());
 
     m_process = new QProcess(this);
 
@@ -359,3 +355,7 @@ QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
     return max_values;
 }
 
+void MainWindow::show()
+{
+    this->show();
+}
