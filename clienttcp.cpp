@@ -95,6 +95,8 @@ void ClientTcp::errorSocket(QAbstractSocket::SocketError error)
         default:
             qDebug() << "ERREUR : " + m_socketServer->errorString();
     }
+
+    this->connection();
 }
 
 void ClientTcp::setConnectionStatus(bool status)
