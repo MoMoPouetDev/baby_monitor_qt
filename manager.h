@@ -4,18 +4,20 @@
 #include "mainwindow.h"
 #include "clienttcp.h"
 
-class Manager
+class Manager : public QObject
 {
-    //Q_OBJECT
+    Q_OBJECT
 
 public:
     Manager();
     ~Manager();
 
 public slots:
+    void connectionStatus();
 
 private:
-    MainWindow *m_mainWindow;
+    MainWindow *m_mainWindow,
+                *m_connectingInfo;
     ClientTcp *m_client;
 
 };
