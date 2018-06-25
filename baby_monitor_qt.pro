@@ -8,10 +8,12 @@ QT += network
 HEADERS += \
     mainwindow.h \
     manager.h \
-    clienttcp.h
+    clienttcp.h \
+    menuwindow.h
 
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
     manager.cpp \
-    clienttcp.cpp
+    clienttcp.cpp \
+    menuwindow.cpp

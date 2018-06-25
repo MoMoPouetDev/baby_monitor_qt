@@ -2,6 +2,9 @@
 #include <QDebug>
 #include <math.h>
 #include <QEasingCurve>
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QLabel>
 
 #include "mainwindow.h"
 
@@ -33,8 +36,16 @@ MainWindow::MainWindow() : QWidget()
     m_buttonConnection->setIcon(m_iconConnectionOff);
     m_buttonConnection->setIconSize(QSize(15,15));
     m_buttonConnection->setGeometry(465, 0, 15, 15);
-    m_buttonConnection->setEnabled(false);
+    m_buttonConnection->setEnabled(true);
 
+    QDialog *secondeFenetre = new QDialog(this);
+    //secondeFenetre->setWindowModality(Qt::NonModal);
+    QPushButton *test = new QPushButton("buttonTest", secondeFenetre);
+
+
+
+        QObject::connect(m_buttonConnection, SIGNAL(clicked()), secondeFenetre, SLOT(open()));
+        //secondeFenetre->show();
 
     m_buttonPower = new QPushButton(this);
     m_buttonPower->setFlat(true);
