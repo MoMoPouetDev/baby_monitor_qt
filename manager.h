@@ -3,6 +3,7 @@
 
 #include "mainwindow.h"
 #include "clienttcp.h"
+#include "menuwindow.h"
 
 class Manager : public QObject
 {
@@ -18,6 +19,7 @@ public slots:
 private:
     MainWindow *m_mainWindow,
                 *m_connectingInfo;
+    MenuWindow *m_menuWindow;
     ClientTcp *m_client;
 
 };

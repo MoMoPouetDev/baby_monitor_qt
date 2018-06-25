@@ -2,7 +2,7 @@
 #define MENUWINDOW_H
 
 #include <QDialog>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QPushButton>
 #include <QProcess>
 #include <QPushButton>
@@ -13,6 +13,7 @@
 
 #include "mainwindow.h"
 
+#define PATH_ICON_MENU_CLOSE    "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
 #define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
 #define PATH_ICON_CONNECTION_OFF    "/home/morgan/git/baby_monitor_qt/images/connectionOff.png"
 #define PATH_ICON_POWER_OFF "/home/morgan/git/baby_monitor_qt/images/powerOff.png"
@@ -24,7 +25,6 @@
 #define SOUND_MAX       100
 #define SOUND_MIN       0
 #define SOUND_MARGIN    10
-
 class MenuWindow : public QObject
 {
     //Q_OBJECT
@@ -32,6 +32,7 @@ class MenuWindow : public QObject
 public:
     MenuWindow();
     ~MenuWindow();
+    void setConnectionIcon(bool);
 public slots:
     void buttonPlus(void);
     void buttonMinus(void);
@@ -39,12 +40,16 @@ public slots:
     void buttonPower(void);
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
+    void openMenu();
 
 private:
-    MainWindow *m_mainWindow;
+    MainWindow m_mainWindow;
+
+    QDialog *m_menuWindow;
+
+    QGridLayout *m_gridMenu;
 
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
-            m_reboot = "/sbin/reboot",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
             m_pathIconConnectionOff = PATH_ICON_CONNECTION_OFF,
             m_pathIconPower = PATH_ICON_POWER_OFF,
@@ -53,7 +58,8 @@ private:
             m_pathIconSoundUp = PATH_ICON_SOUND_UP,
             m_pathIconSoundDown = PATH_ICON_SOUND_DOWN;
 
-    QIcon m_iconConnectionOn,
+    QIcon m_menuIconClose,
+            m_iconConnectionOn,
             m_iconConnectionOff,
             m_iconPower,
             m_iconMute,
@@ -61,15 +67,14 @@ private:
             m_iconSoundUp,
             m_iconSoundDown;
 
-    QPushButton *m_buttonConnection,
+    QPushButton *m_buttonMenuClose,
+                *m_buttonConnection,
                 *m_buttonPower,
                 *m_buttonUp,
                 *m_buttonDown,
                 *m_buttonSound;
 
     QProgressBar *m_progressSound;
-
-
 };
 
 #endif // MENUWINDOW_H

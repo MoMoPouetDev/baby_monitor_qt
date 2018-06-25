@@ -5,7 +5,6 @@
 Manager::Manager() : QObject()
 {
     m_mainWindow = new MainWindow;
-
     m_client = new ClientTcp;
 
     QObject::connect(m_client, SIGNAL(connectionStatus()), this, SLOT(connectionStatus()));
@@ -21,5 +20,5 @@ Manager::~Manager()
 
 void Manager::connectionStatus()
 {
-    m_mainWindow->setConnectionIcon(m_client->getConnectionStatus());
+    m_menuWindow->setConnectionIcon(m_client->getConnectionStatus());
 }
