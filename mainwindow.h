@@ -72,10 +72,11 @@ class MainWindow : public QWidget
 
     private:
     float previousValueRight = 0, previousValueLeft = 0;
-    QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; width: 10px; margin: 0.5px;}",
-            m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-top-left-radius: 5px; border-bottom-left-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
-            m_styleMiddle = "QProgressBar {border-top: 2px solid grey; border-bottom: 2px solid grey;} QProgressBar::chunk {background-color: orange; width: 3px; margin: 0.5px;}",
-            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-bottom: 2px solid grey; border-top-right-radius: 5px; border-bottom-right-radius: 5px;} QProgressBar::chunk {background-color: red; width: 3px; margin: 0.5px;}",
+    QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 5px; margin: 0.5px;}",
+            m_styleWidget = "QWidget {background-color : white}",
+            m_styleLow = "QProgressBar {border-right: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background: transparente;} QProgressBar::chunk {background-color: #4EE34E; height: 3px; margin: 0.5px;}",
+            m_styleMiddle = "QProgressBar {border-right: 2px solid grey; border-left: 2px solid grey; background: transparente;} QProgressBar::chunk {background-color: #FFC200; height: 3px; margin: 0.5px;}",
+            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-left: 2px solid grey; border-top-right-radius: 5px; border-top-left-radius: 5px; background: transparente;} QProgressBar::chunk {background-color: red; height: 3px; margin: 0.5px;}",
             m_reboot = "/sbin/reboot",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
             m_pathIconConnectionOff = PATH_ICON_CONNECTION_OFF,
@@ -117,7 +118,7 @@ class MainWindow : public QWidget
                         *m_animationBarHigh;
     QAudioProbe *m_probe;
 
-    QDialog *m_menuWindow;
+    QWidget *m_menuWindow;
     QGridLayout *m_gridMenu;
 
     QString getStyle()

@@ -14,7 +14,7 @@ static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
 
 MainWindow::MainWindow() : QWidget()
 {
-    this->setFixedSize(480, 320);
+    this->setFixedSize(800, 480);
 
     m_messagePowerOff = new QMessageBox(this);
 
@@ -22,7 +22,7 @@ MainWindow::MainWindow() : QWidget()
     m_video = new QVideoWidget(this);
     m_player->setMedia(QUrl::fromLocalFile(VIDEO_URL));
     m_player->setVideoOutput(m_video);
-    m_video->setGeometry(10, 13, 380, 214);
+    m_video->setGeometry(0, 0, 800, 480);
     m_player->play();
     m_player->setVolume(50);
 
@@ -32,77 +32,69 @@ MainWindow::MainWindow() : QWidget()
     m_buttonMenuOpen->setIconSize(QSize(30,30));
     m_buttonMenuOpen->setGeometry(0, 0, 30, 30);
 
-
+/************** MenuWindow ************/
  /************************************************/
-    m_menuWindow = new QDialog(this, Qt::FramelessWindowHint);
-    m_menuWindow->setModal(true);
+    m_menuWindow = new QWidget(this, Qt::FramelessWindowHint);
+    m_menuWindow->setHidden(true);
+    m_menuWindow->setStyleSheet(m_styleWidget);
+    m_menuWindow->setFixedSize(100, 240);
     m_menuWindow->move(0,0);
-    m_gridMenu = new QGridLayout;
 
-    m_buttonMenuClose = new QPushButton();
+    m_buttonMenuClose = new QPushButton(m_menuWindow);
     m_iconMenuClose.addFile(m_pathIconMenuClose);
     m_buttonMenuClose->setIcon(m_iconMenuClose);
     m_buttonMenuClose->setIconSize(QSize(30,30));
     m_buttonMenuClose->setGeometry(0, 0, 30, 30);
 
-    m_buttonConnection = new QPushButton();
+    m_buttonConnection = new QPushButton(m_menuWindow);
     m_buttonConnection->setFlat(true);
     m_iconConnectionOn.addFile(m_pathIconConnectionOn);
     m_iconConnectionOff.addFile(m_pathIconConnectionOff);
     m_buttonConnection->setIcon(m_iconConnectionOff);
-    m_buttonConnection->setIconSize(QSize(15,15));
-    //m_buttonConnection->setGeometry(465, 0, 15, 15);
+    m_buttonConnection->setIconSize(QSize(20,20));
+    m_buttonConnection->setGeometry(45, 0, 20, 20);
     m_buttonConnection->setEnabled(false);
 
-    m_buttonPower = new QPushButton();
+    m_buttonPower = new QPushButton(m_menuWindow);
     m_buttonPower->setFlat(true);
     m_iconPower.addFile(m_pathIconPower);
     m_buttonPower->setIcon(m_iconPower);
-    m_buttonPower->setIconSize(QSize(30,30));
-    //m_buttonPower->setGeometry(440, 10, 33, 33);
+    m_buttonPower->setIconSize(QSize(20,20));
+    m_buttonPower->setGeometry(70, 0, 20, 20);
 
-    m_buttonUp = new QPushButton();
+    m_buttonUp = new QPushButton(m_menuWindow);
     m_buttonUp->setFlat(true);
     m_iconSoundUp.addFile(m_pathIconSoundUp);
     m_buttonUp->setIcon(m_iconSoundUp);
-    m_buttonUp->setIconSize(QSize(30,30));
-    //m_buttonUp->setGeometry(440, 220, 33, 33);
+    m_buttonUp->setIconSize(QSize(20,20));
+    m_buttonUp->setGeometry(60, 80, 20, 20);
 
-    m_buttonSound = new QPushButton();
+    m_buttonSound = new QPushButton(m_menuWindow);
     m_buttonSound->setFlat(true);
     m_iconNomute.addFile(m_pathIconNomute);
     m_iconMute.addFile(m_pathIconMute);
     m_buttonSound->setIcon(m_iconNomute);
-    m_buttonSound->setIconSize(QSize(30,30));
-    //m_buttonSound->setGeometry(440, 250, 33, 33);
+    m_buttonSound->setIconSize(QSize(20,20));
+    m_buttonSound->setGeometry(60, 110, 20, 20);
 
-    m_buttonDown = new QPushButton();
+    m_buttonDown = new QPushButton(m_menuWindow);
     m_buttonDown->setFlat(true);
     m_iconSoundDown.addFile(m_pathIconSoundDown);
     m_buttonDown->setIcon(m_iconSoundDown);
-    m_buttonDown->setIconSize(QSize(30,30));
-    //m_buttonDown->setGeometry(440, 280, 33, 33);
+    m_buttonDown->setIconSize(QSize(20,20));
+    m_buttonDown->setGeometry(60, 140, 20, 20);
 
-    m_progressSound = new QProgressBar();
-    //m_progressSound->setGeometry(440, 50, 33, 160);
-    //m_progressSound->setOrientation(Qt::Vertical);
+    m_progressSound = new QProgressBar(m_menuWindow);
+    m_progressSound->setGeometry(20, 40, 20, 160);
+    m_progressSound->setOrientation(Qt::Vertical);
     m_progressSound->setValue(m_player->volume());
     m_progressSound->setStyleSheet(getStyle());
     m_progressSound->setTextVisible(false);
 
-    m_gridMenu->addWidget(m_buttonMenuClose, 0, 0);
-    m_gridMenu->addWidget(m_buttonConnection, 0, 2);
-    m_gridMenu->addWidget(m_buttonPower, 0, 4);
-    m_gridMenu->addWidget(m_progressSound, 1, 0, 1, 5);
-    m_gridMenu->addWidget(m_buttonDown, 2, 1);
-    m_gridMenu->addWidget(m_buttonSound, 2, 2);
-    m_gridMenu->addWidget(m_buttonUp, 2, 3);
-
-    m_menuWindow->setLayout(m_gridMenu);
-
 /*********************************************************************/
     m_progressLow = new QProgressBar(this);
-    m_progressLow->setGeometry(10, 270, 240, 30);
+    m_progressLow->setGeometry(750, 200, 30, 240);
+    m_progressLow->setOrientation(Qt::Vertical);
     m_progressLow->setMinimum(MIN_VALUE_LOW);
     m_progressLow->setMaximum(MAX_VALUE_LOW);
     m_progressLow->setValue(0);
@@ -110,7 +102,8 @@ MainWindow::MainWindow() : QWidget()
     m_progressLow->setTextVisible(false);
 
     m_progressMiddle = new QProgressBar(this);
-    m_progressMiddle->setGeometry(247, 270, 120, 30);
+    m_progressMiddle->setGeometry(750, 80, 30, 120);
+    m_progressMiddle->setOrientation(Qt::Vertical);
     m_progressMiddle->setMinimum(MIN_VALUE_MIDDLE);
     m_progressMiddle->setMaximum(MAX_VALUE_MIDDLE);
     m_progressMiddle->setValue(0);
@@ -118,7 +111,8 @@ MainWindow::MainWindow() : QWidget()
     m_progressMiddle->setTextVisible(false);
 
     m_progressHigh = new QProgressBar(this);
-    m_progressHigh->setGeometry(364, 270, 40, 30);
+    m_progressHigh->setGeometry(750, 40, 30, 40);
+    m_progressHigh->setOrientation(Qt::Vertical);
     m_progressHigh->setMinimum(MIN_VALUE_HIGH);
     m_progressHigh->setMaximum(MAX_VALUE_HIGH);
     m_progressHigh->setValue(0);
@@ -411,11 +405,11 @@ void MainWindow::setConnectionIcon(bool connectionStatus)
 
 void MainWindow::open()
 {
-    m_menuWindow->open();
+    m_menuWindow->show();
 }
 
 void MainWindow::close()
 {
-    m_menuWindow->close();
+    m_menuWindow->hide();
 }
 
