@@ -72,7 +72,7 @@ MenuWindow::MenuWindow() : QObject()
 
 MenuWindow::~MenuWindow()
 {
-    //delete m_mainWindow;
+    m_mainWindow->deleteLater();
 }
 
 void MenuWindow::changeVolumeBar(int volumeValue)

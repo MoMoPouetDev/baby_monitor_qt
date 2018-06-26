@@ -17,10 +17,9 @@ public slots:
     void connectionStatus();
 
 private:
-    MainWindow *manage_mainWindow,
-                *manage_connectingInfo;
-    MenuWindow *manage_menuWindow;
-    ClientTcp *manage_client;
+    MainWindow *m_mainWindow;
+    MenuWindow *m_menuWindow;
+    ClientTcp *m_client;
 
 };
 

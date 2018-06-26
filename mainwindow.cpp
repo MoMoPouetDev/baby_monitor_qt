@@ -97,7 +97,7 @@ MainWindow::MainWindow() : QWidget()
 
 MainWindow::~MainWindow()
 {
-    //delete main_menuWindow;
+    main_menuWindow->deleteLater();
 }
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)

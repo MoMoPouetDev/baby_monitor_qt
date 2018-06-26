@@ -4,22 +4,23 @@
 
 Manager::Manager() : QObject()
 {
-    manage_mainWindow = new MainWindow;
-    manage_menuWindow = new MenuWindow;
-    manage_client = new ClientTcp;
+    m_mainWindow = new MainWindow;
+    m_menuWindow = new MenuWindow;
+    m_client = new ClientTcp;
 
-    QObject::connect(manage_client, SIGNAL(connectionStatus()), this, SLOT(connectionStatus()));
+    QObject::connect(m_client, SIGNAL(connectionStatus()), this, SLOT(connectionStatus()));
 
-    manage_mainWindow->setShow();
+    m_mainWindow->setShow();
 }
 
 Manager::~Manager()
 {
-    //delete main_mainWindow;
-    //delete m_client;
+    m_mainWindow->deleteLater();
+    m_menuWindow->deleteLater();
+    m_client->deleteLater();
 }
 
 void Manager::connectionStatus()
 {
-    manage_menuWindow->setConnectionIcon(manage_client->getConnectionStatus());
+    m_menuWindow->setConnectionIcon(m_client->getConnectionStatus());
 }
