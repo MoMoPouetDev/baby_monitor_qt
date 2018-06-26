@@ -15,6 +15,8 @@
 #include <QVector>
 #include <QPropertyAnimation>
 #include <QAudioProbe>
+#include <QDialog>
+#include <QGridLayout>
 
 #ifdef __APPLE__
     #define VIDEO_URL   "/Users/morganvenandy/test1.mp4"
@@ -25,6 +27,8 @@
     #define PATH_ICON_SOUND_DOWN "/Users/morganvenandy/baby_monitor_qt/images/soundDown.png"
 #elif __linux__
     #define VIDEO_URL   "/home/morgan/test1.mp4"
+#define PATH_ICON_MENU_OPEN "/home/morgan/git/baby_monitor_qt/images/menuOpen.png"
+#define PATH_ICON_MENU_CLOSE "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
 #define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
 #define PATH_ICON_CONNECTION_OFF    "/home/morgan/git/baby_monitor_qt/images/connectionOff.png"
 #define PATH_ICON_POWER_OFF "/home/morgan/git/baby_monitor_qt/images/powerOff.png"
@@ -63,10 +67,12 @@ class MainWindow : public QWidget
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
     void processBuffer(const QAudioBuffer&);
+    void open();
+    void close();
 
     private:
     float previousValueRight = 0, previousValueLeft = 0;
-    QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
+    QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; width: 10px; margin: 0.5px;}",
             m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-top-left-radius: 5px; border-bottom-left-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
             m_styleMiddle = "QProgressBar {border-top: 2px solid grey; border-bottom: 2px solid grey;} QProgressBar::chunk {background-color: orange; width: 3px; margin: 0.5px;}",
             m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-bottom: 2px solid grey; border-top-right-radius: 5px; border-bottom-right-radius: 5px;} QProgressBar::chunk {background-color: red; width: 3px; margin: 0.5px;}",
@@ -77,20 +83,26 @@ class MainWindow : public QWidget
             m_pathIconMute = PATH_ICON_MUTE,
             m_pathIconNomute = PATH_ICON_NOMUTE,
             m_pathIconSoundUp = PATH_ICON_SOUND_UP,
-            m_pathIconSoundDown = PATH_ICON_SOUND_DOWN;
+            m_pathIconSoundDown = PATH_ICON_SOUND_DOWN,
+            m_pathIconMenuOpen = PATH_ICON_MENU_OPEN,
+            m_pathIconMenuClose = PATH_ICON_MENU_CLOSE;
     QIcon m_iconConnectionOn,
             m_iconConnectionOff,
             m_iconPower,
             m_iconMute,
             m_iconNomute,
             m_iconSoundUp,
-            m_iconSoundDown;
+            m_iconSoundDown,
+            m_iconMenuOpen,
+            m_iconMenuClose;
     QSize m_sizeIcon = QSize(50, 50);
     QPushButton *m_buttonConnection,
                 *m_buttonPower,
                 *m_buttonUp,
                 *m_buttonDown,
-                *m_buttonSound;
+                *m_buttonSound,
+                *m_buttonMenuOpen,
+                *m_buttonMenuClose;
     QProgressBar *m_progressSound,
                 *m_progressLow,
                 *m_progressMiddle,
@@ -104,6 +116,9 @@ class MainWindow : public QWidget
                         *m_animationBarMiddle,
                         *m_animationBarHigh;
     QAudioProbe *m_probe;
+
+    QDialog *m_menuWindow;
+    QGridLayout *m_gridMenu;
 
     QString getStyle()
     {
