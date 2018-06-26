@@ -52,7 +52,7 @@ class MainWindow : public QWidget
     void processBuffer(const QAudioBuffer&);
 
     private:
-    MenuWindow *m_menuWindow;
+    MenuWindow *main_menuWindow;
 
     float previousValueRight = 0, previousValueLeft = 0;
     QString //m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",

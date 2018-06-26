@@ -10,8 +10,9 @@
 #include <QSize>
 #include <QMessageBox>
 #include <QProcess>
+#include <QProgressBar>
 
-#include "mainwindow.h"
+//#include "mainwindow.h"
 
 #define PATH_ICON_MENU_CLOSE    "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
 #define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
@@ -25,6 +26,7 @@
 #define SOUND_MAX       100
 #define SOUND_MIN       0
 #define SOUND_MARGIN    10
+class MainWindow;
 class MenuWindow : public QObject
 {
     //Q_OBJECT
@@ -43,7 +45,7 @@ public slots:
     void openMenu();
 
 private:
-    MainWindow m_mainWindow;
+    MainWindow *menu_mainWindow;
 
     QDialog *m_menuWindow;
 

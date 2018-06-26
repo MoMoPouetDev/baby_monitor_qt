@@ -17,7 +17,7 @@ static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
 
 MainWindow::MainWindow() : QWidget()
 {
-    m_menuWindow = new MenuWindow;
+    main_menuWindow = new MenuWindow;
 
     this->setFixedSize(480, 320);
 
@@ -63,9 +63,9 @@ MainWindow::MainWindow() : QWidget()
     m_progressHigh->setStyleSheet(m_styleHigh);
     m_progressHigh->setTextVisible(false);
 
-    QObject::connect(m_buttonMenuOpen, SIGNAL(clicked()), m_menuWindow, SLOT(openMenu()));
-    QObject::connect(m_player, SIGNAL(volumeChanged(int)), m_menuWindow, SLOT(changeVolumeBar(int)));
-    QObject::connect(m_player, SIGNAL(mutedChanged(bool)), m_menuWindow, SLOT(muteVolumeBar(bool)));
+    QObject::connect(m_buttonMenuOpen, SIGNAL(clicked()), main_menuWindow, SLOT(openMenu()));
+    QObject::connect(m_player, SIGNAL(volumeChanged(int)), main_menuWindow, SLOT(changeVolumeBar(int)));
+    QObject::connect(m_player, SIGNAL(mutedChanged(bool)), main_menuWindow, SLOT(muteVolumeBar(bool)));
 
     m_process = new QProcess(this);
 
@@ -97,7 +97,7 @@ MainWindow::MainWindow() : QWidget()
 
 MainWindow::~MainWindow()
 {
-    delete m_menuWindow;
+    //delete main_menuWindow;
 }
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)

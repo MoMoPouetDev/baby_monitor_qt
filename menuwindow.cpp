@@ -1,13 +1,14 @@
 #include <QDebug>
 
 #include "menuwindow.h"
+#include "mainwindow.h"
 
 MenuWindow::MenuWindow() : QObject()
 {
-    //&m_mainWindow = new MainWindow;
+    menu_mainWindow = new MainWindow;
 
  /**********************************************/
-    m_menuWindow = new QDialog(&m_mainWindow);
+    m_menuWindow = new QDialog(menu_mainWindow);
     //secondeFenetre->setWindowModality(Qt::NonModal);
 
 
@@ -58,7 +59,7 @@ MenuWindow::MenuWindow() : QObject()
     m_progressSound = new QProgressBar();
     //m_progressSound->setGeometry(440, 50, 33, 160);
     m_progressSound->setOrientation(Qt::Vertical);
-    m_progressSound->setValue(m_mainWindow.getVolumeValuePlayer());
+    m_progressSound->setValue(menu_mainWindow->getVolumeValuePlayer());
     m_progressSound->setStyleSheet(m_style);
     m_progressSound->setTextVisible(false);
 
@@ -79,7 +80,7 @@ MenuWindow::MenuWindow() : QObject()
 
 MenuWindow::~MenuWindow()
 {
-    //delete m_mainWindow;
+    //delete menu_mainWindow;
 }
 
 void MenuWindow::changeVolumeBar(int volumeValue)
@@ -96,54 +97,54 @@ void MenuWindow::muteVolumeBar(bool muted)
     }
     else
     {
-        m_progressSound->setValue(m_mainWindow.getVolumeValuePlayer());
+        m_progressSound->setValue(menu_mainWindow->getVolumeValuePlayer());
         m_buttonSound->setIcon(m_iconNomute);
     }
 }
 
 void MenuWindow::buttonPlus(void)
 {
-    if(m_mainWindow.getMutedPlayer())
+    if(menu_mainWindow->getMutedPlayer())
     {
-        m_mainWindow.setMutePlayer(false);
+        menu_mainWindow->setMutePlayer(false);
         m_buttonSound->setIcon(m_iconNomute);
     }
-    if( m_mainWindow.getVolumeValuePlayer() <= SOUND_MAX)
+    if( menu_mainWindow->getVolumeValuePlayer() <= SOUND_MAX)
     {
-        m_mainWindow.setVolumePlayer((m_mainWindow.getVolumeValuePlayer())+SOUND_MARGIN);
+        menu_mainWindow->setVolumePlayer((menu_mainWindow->getVolumeValuePlayer())+SOUND_MARGIN);
     }
 }
 
 void MenuWindow::buttonMinus(void)
 {
-    if(m_mainWindow.getMutedPlayer())
+    if(menu_mainWindow->getMutedPlayer())
     {
-        m_mainWindow.setMutePlayer(false);
+        menu_mainWindow->setMutePlayer(false);
         m_buttonSound->setIcon(m_iconNomute);
     }
-    if(m_mainWindow.getVolumeValuePlayer() >= SOUND_MIN)
+    if(menu_mainWindow->getVolumeValuePlayer() >= SOUND_MIN)
     {
-        m_mainWindow.setVolumePlayer((m_mainWindow.getVolumeValuePlayer())-SOUND_MARGIN);
+        menu_mainWindow->setVolumePlayer((menu_mainWindow->getVolumeValuePlayer())-SOUND_MARGIN);
     }
 }
 
 void MenuWindow::buttonMute(void)
 {
-    if(!m_mainWindow.getMutedPlayer())
+    if(!menu_mainWindow->getMutedPlayer())
     {
         m_buttonSound->setIcon(m_iconMute);
-        m_mainWindow.setMutePlayer(true);
+        menu_mainWindow->setMutePlayer(true);
     }
     else
     {
         m_buttonSound->setIcon(m_iconNomute);
-        m_mainWindow.setMutePlayer(false);
+        menu_mainWindow->setMutePlayer(false);
     }
 }
 
 void MenuWindow::buttonPower(void)
 {
-    m_mainWindow.setMessagePowerOff();
+    menu_mainWindow->setMessagePowerOff();
 }
 
 void MenuWindow::openMenu()
