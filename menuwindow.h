@@ -1,7 +1,7 @@
 #ifndef MENUWINDOW_H
 #define MENUWINDOW_H
 
-#include <QDialog>
+#include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
 #include <QProcess>
@@ -45,11 +45,9 @@ public slots:
     void openMenu();
 
 private:
-    MainWindow *menu_mainWindow;
+    MainWindow *m_mainWindow;
 
-    QDialog *m_menuWindow;
-
-    QGridLayout *m_gridMenu;
+    QWidget *m_menuWindow;
 
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
