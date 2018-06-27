@@ -7,7 +7,6 @@
 #include <QLabel>
 
 #include "mainwindow.h"
-#include "menuwindow.h"
 
 static qreal getPeakValue(const QAudioFormat &format);
 static QVector<qreal> getBufferLevels(const QAudioBuffer &buffer);
@@ -17,8 +16,6 @@ static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
 
 MainWindow::MainWindow() : QWidget()
 {
-    main_menuWindow = new MenuWindow;
-
     this->setFixedSize(480, 320);
 
     m_messagePowerOff = new QMessageBox(this);
@@ -63,9 +60,9 @@ MainWindow::MainWindow() : QWidget()
     m_progressHigh->setStyleSheet(m_styleHigh);
     m_progressHigh->setTextVisible(false);
 
-    QObject::connect(m_buttonMenuOpen, SIGNAL(clicked()), main_menuWindow, SLOT(openMenu()));
-    QObject::connect(m_player, SIGNAL(volumeChanged(int)), main_menuWindow, SLOT(changeVolumeBar(int)));
-    QObject::connect(m_player, SIGNAL(mutedChanged(bool)), main_menuWindow, SLOT(muteVolumeBar(bool)));
+    QObject::connect(m_buttonMenuOpen, SIGNAL(clicked()), this, SLOT(openMenu()));
+    QObject::connect(m_player, SIGNAL(volumeChanged(int)), this, SLOT(changeVolumeBar(int)));
+    QObject::connect(m_player, SIGNAL(mutedChanged(bool)), this, SLOT(muteVolumeBar(bool)));
 
     m_process = new QProcess(this);
 
@@ -97,7 +94,7 @@ MainWindow::MainWindow() : QWidget()
 
 MainWindow::~MainWindow()
 {
-    main_menuWindow->deleteLater();
+    //main_menuWindow->deleteLater();
 }
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
@@ -292,4 +289,30 @@ void MainWindow::setMessagePowerOff()
         //ShutDown
         m_process->startDetached(getReboot());
     }
+}
+
+void MainWindow::openMenu()
+{
+    MenuWindow *m_menuWindow = new MenuWindow;
+    m_menuWindow->openMenu();
+    m_menuWindow->deleteLater();
+}
+
+void MainWindow::changeVolumeBar(int volume)
+{
+    MenuWindow *m_menuWindow = new MenuWindow;
+    m_menuWindow->changeVolumeBar(volume);
+    m_menuWindow->deleteLater();
+}
+
+void MainWindow::muteVolumeBar(bool mute)
+{
+    MenuWindow *m_menuWindow = new MenuWindow;
+    m_menuWindow->muteVolumeBar(mute);
+    m_menuWindow->deleteLater();
+}
+
+QWidget* MainWindow::getWindow()
+{
+    return menu = new QWidget(this);
 }

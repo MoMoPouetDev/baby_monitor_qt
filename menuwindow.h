@@ -12,7 +12,7 @@
 #include <QProcess>
 #include <QProgressBar>
 
-//#include "mainwindow.h"
+#include "mainwindow.h"
 
 #define PATH_ICON_MENU_CLOSE    "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
 #define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
@@ -26,15 +26,19 @@
 #define SOUND_MAX       100
 #define SOUND_MIN       0
 #define SOUND_MARGIN    10
-class MainWindow;
-class MenuWindow : public QObject
+
+class MenuWindow : public QWidget
 {
-    //Q_OBJECT
+    Q_OBJECT
 
 public:
     MenuWindow();
     ~MenuWindow();
     void setConnectionIcon(bool);
+    int getVolumeValuePlayer();
+    bool getMutedPlayer();
+    void setMutedPlayer(bool);
+    void setVolumePlayer(int);
 public slots:
     void buttonPlus(void);
     void buttonMinus(void);
@@ -43,13 +47,13 @@ public slots:
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
     void openMenu();
+    QWidget *getWindow();
 
 private:
-    MainWindow *m_mainWindow;
-
     QWidget *m_menuWindow;
 
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
+            m_styleWidget = "QWidget {background-color : white}",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
             m_pathIconConnectionOff = PATH_ICON_CONNECTION_OFF,
             m_pathIconPower = PATH_ICON_POWER_OFF,
