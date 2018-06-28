@@ -62,12 +62,19 @@ MainWindow::MainWindow() : QWidget()
     m_buttonPower->setIconSize(QSize(20,20));
     m_buttonPower->setGeometry(70, 0, 20, 20);
 
+    m_buttonMusicLibrary = new QPushButton(m_menuWindow);
+    m_buttonMusicLibrary->setFlat(true);
+    m_iconMusicLibrary.addFile(m_pathIconMusicLibrary);
+    m_buttonMusicLibrary->setIcon(m_iconMusicLibrary);
+    m_buttonMusicLibrary->setIconSize(QSize(20,20));
+    m_buttonMusicLibrary->setGeometry(60, 60, 20, 20);
+
     m_buttonUp = new QPushButton(m_menuWindow);
     m_buttonUp->setFlat(true);
     m_iconSoundUp.addFile(m_pathIconSoundUp);
     m_buttonUp->setIcon(m_iconSoundUp);
     m_buttonUp->setIconSize(QSize(20,20));
-    m_buttonUp->setGeometry(60, 80, 20, 20);
+    m_buttonUp->setGeometry(60, 90, 20, 20);
 
     m_buttonSound = new QPushButton(m_menuWindow);
     m_buttonSound->setFlat(true);
@@ -75,14 +82,14 @@ MainWindow::MainWindow() : QWidget()
     m_iconMute.addFile(m_pathIconMute);
     m_buttonSound->setIcon(m_iconNomute);
     m_buttonSound->setIconSize(QSize(20,20));
-    m_buttonSound->setGeometry(60, 110, 20, 20);
+    m_buttonSound->setGeometry(60, 120, 20, 20);
 
     m_buttonDown = new QPushButton(m_menuWindow);
     m_buttonDown->setFlat(true);
     m_iconSoundDown.addFile(m_pathIconSoundDown);
     m_buttonDown->setIcon(m_iconSoundDown);
     m_buttonDown->setIconSize(QSize(20,20));
-    m_buttonDown->setGeometry(60, 140, 20, 20);
+    m_buttonDown->setGeometry(60, 150, 20, 20);
 
     m_progressSound = new QProgressBar(m_menuWindow);
     m_progressSound->setGeometry(20, 40, 20, 160);
@@ -125,6 +132,7 @@ MainWindow::MainWindow() : QWidget()
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
     QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
     QObject::connect(m_buttonPower, SIGNAL(clicked()), this, SLOT(buttonPower()));
+    QObject::connect(m_buttonMusicLibrary, SIGNAL(clicked()), this, SLOT(selectMusic()));
 
     QObject::connect(m_player, SIGNAL(volumeChanged(int)), this, SLOT(changeVolumeBar(int)));
     QObject::connect(m_player, SIGNAL(mutedChanged(bool)), this, SLOT(muteVolumeBar(bool)));
@@ -210,6 +218,11 @@ void MainWindow::buttonPower(void)
         //ShutDown
         m_process->startDetached(getReboot());
     }
+}
+
+void MainWindow::selectMusic()
+{
+
 }
 
 void MainWindow::changeVolumeBar(int volumeValue)

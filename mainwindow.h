@@ -17,6 +17,7 @@
 #include <QAudioProbe>
 #include <QDialog>
 #include <QGridLayout>
+#include <QFileDialog>
 
 #ifdef __APPLE__
     #define VIDEO_URL   "/Users/morganvenandy/test1.mp4"
@@ -27,6 +28,7 @@
     #define PATH_ICON_SOUND_DOWN "/Users/morganvenandy/baby_monitor_qt/images/soundDown.png"
 #elif __linux__
     #define VIDEO_URL   "/home/morgan/test1.mp4"
+#define PATH_ICON_MUSIC_LIBRARY "/home/morgan/git/baby_monitor_qt/images/musicLibrary.png"
 #define PATH_ICON_MENU_OPEN "/home/morgan/git/baby_monitor_qt/images/menuOpen.png"
 #define PATH_ICON_MENU_CLOSE "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
 #define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
@@ -69,9 +71,11 @@ class MainWindow : public QWidget
     void processBuffer(const QAudioBuffer&);
     void open();
     void close();
+    void selectMusic();
 
     private:
     float previousValueRight = 0, previousValueLeft = 0;
+
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 5px; margin: 0.5px;}",
             m_styleWidget = "QWidget {background-color : white}",
             m_styleLow = "QProgressBar {border-right: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background: transparente;} QProgressBar::chunk {background-color: #4EE34E; height: 3px; margin: 0.5px;}",
@@ -86,7 +90,9 @@ class MainWindow : public QWidget
             m_pathIconSoundUp = PATH_ICON_SOUND_UP,
             m_pathIconSoundDown = PATH_ICON_SOUND_DOWN,
             m_pathIconMenuOpen = PATH_ICON_MENU_OPEN,
-            m_pathIconMenuClose = PATH_ICON_MENU_CLOSE;
+            m_pathIconMenuClose = PATH_ICON_MENU_CLOSE,
+            m_pathIconMusicLibrary = PATH_ICON_MUSIC_LIBRARY;
+
     QIcon m_iconConnectionOn,
             m_iconConnectionOff,
             m_iconPower,
@@ -95,30 +101,40 @@ class MainWindow : public QWidget
             m_iconSoundUp,
             m_iconSoundDown,
             m_iconMenuOpen,
-            m_iconMenuClose;
-    QSize m_sizeIcon = QSize(50, 50);
+            m_iconMenuClose,
+            m_iconMusicLibrary;
+
     QPushButton *m_buttonConnection,
                 *m_buttonPower,
                 *m_buttonUp,
                 *m_buttonDown,
                 *m_buttonSound,
                 *m_buttonMenuOpen,
-                *m_buttonMenuClose;
+                *m_buttonMenuClose,
+                *m_buttonMusicLibrary;
+
     QProgressBar *m_progressSound,
                 *m_progressLow,
                 *m_progressMiddle,
                 *m_progressHigh;
+
     QMediaPlayer *m_player;
+
     QVideoWidget *m_video;
+
     QMessageBox *m_messagePowerOff,
                 *m_messageConnection;
+
     QProcess *m_process;
+
     QPropertyAnimation *m_animationBarLow,
                         *m_animationBarMiddle,
                         *m_animationBarHigh;
+
     QAudioProbe *m_probe;
 
     QWidget *m_menuWindow;
+
     QGridLayout *m_gridMenu;
 
     QString getStyle()
