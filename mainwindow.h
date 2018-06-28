@@ -27,13 +27,13 @@
 #define MAX_VALUE_MIDDLE    90
 #define MIN_VALUE_HIGH  90
 #define MAX_VALUE_HIGH  100
-
+class MenuWindow;
 class MainWindow : public QWidget
 {
     Q_OBJECT
 
     public:
-    MainWindow();
+    MainWindow(QWidget *parent=0);
     ~MainWindow();
     void setShow();
     int getVolumeValuePlayer();
@@ -50,7 +50,7 @@ class MainWindow : public QWidget
     void muteVolumeBar(bool);
 
     private:
-    QWidget *menu;
+    MenuWindow *m_menuWindow;
     float previousValueRight = 0, previousValueLeft = 0;
 
     QString m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-top-left-radius: 5px; border-bottom-left-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",

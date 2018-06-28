@@ -14,7 +14,7 @@ static QVector<qreal> getBufferLevels(const QAudioBuffer &buffer);
 template <class T>
 static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels);
 
-MainWindow::MainWindow() : QWidget()
+MainWindow::MainWindow(QWidget *parent) : QWidget()
 {
     this->setFixedSize(480, 320);
 
@@ -94,7 +94,6 @@ MainWindow::MainWindow() : QWidget()
 
 MainWindow::~MainWindow()
 {
-    //main_menuWindow->deleteLater();
 }
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
@@ -293,26 +292,18 @@ void MainWindow::setMessagePowerOff()
 
 void MainWindow::openMenu()
 {
-    MenuWindow *m_menuWindow = new MenuWindow;
+    m_menuWindow = new MenuWindow(this);
     m_menuWindow->openMenu();
-    m_menuWindow->deleteLater();
 }
 
 void MainWindow::changeVolumeBar(int volume)
 {
-    MenuWindow *m_menuWindow = new MenuWindow;
+    m_menuWindow = new MenuWindow(this);
     m_menuWindow->changeVolumeBar(volume);
-    m_menuWindow->deleteLater();
 }
 
 void MainWindow::muteVolumeBar(bool mute)
 {
-    MenuWindow *m_menuWindow = new MenuWindow;
+    m_menuWindow = new MenuWindow(this);
     m_menuWindow->muteVolumeBar(mute);
-    m_menuWindow->deleteLater();
-}
-
-QWidget* MainWindow::getWindow()
-{
-    return menu = new QWidget(this);
 }

@@ -5,7 +5,7 @@
 Manager::Manager() : QObject()
 {
     m_mainWindow = new MainWindow;
-    m_menuWindow = new MenuWindow;
+    m_menuWindow = new MenuWindow(m_mainWindow);
     m_client = new ClientTcp;
 
     QObject::connect(m_client, SIGNAL(connectionStatus()), this, SLOT(connectionStatus()));

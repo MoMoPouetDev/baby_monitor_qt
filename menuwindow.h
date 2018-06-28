@@ -26,13 +26,13 @@
 #define SOUND_MAX       100
 #define SOUND_MIN       0
 #define SOUND_MARGIN    10
-
+class MainWindow;
 class MenuWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    MenuWindow();
+    MenuWindow(QWidget *parent);
     ~MenuWindow();
     void setConnectionIcon(bool);
     int getVolumeValuePlayer();
@@ -47,11 +47,11 @@ public slots:
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
     void openMenu();
-    QWidget *getWindow();
+    //QWidget *getWindow();
 
 private:
     QWidget *m_menuWindow;
-
+    MainWindow *m_mainWindow;
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
             m_styleWidget = "QWidget {background-color : white}",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
