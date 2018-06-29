@@ -12,7 +12,7 @@
 #include <QProcess>
 #include <QProgressBar>
 
-#include "mainwindow.h"
+#include "manager.h"
 
 #define PATH_ICON_MUSIC_LIBRARY "/home/morgan/git/baby_monitor_qt/images/musicLibrary.png"
 #define PATH_ICON_MENU_CLOSE    "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
@@ -29,6 +29,7 @@
 #define SOUND_MARGIN    10
 
 class MainWindow;
+class Manager;
 class MenuWindow : public QWidget
 {
     Q_OBJECT
@@ -53,7 +54,6 @@ public slots:
 
 private:
     QWidget *m_menuWindow;
-    QWidget *mainWindow;
     MainWindow *m_mainWindow;
 
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",

@@ -20,6 +20,21 @@ Manager::~Manager()
     m_client->deleteLater();
 }
 
+MainWindow* Manager::getInstanceMainWindow()
+{
+    return m_mainWindow;
+}
+
+MenuWindow* Manager::getInstanceMenuWindow()
+{
+    return m_menuWindow;
+}
+
+ClientTcp* Manager::getInstanceClientTcp()
+{
+    return m_client;
+}
+
 void Manager::connectionStatus()
 {
     m_menuWindow->setConnectionIcon(m_client->getConnectionStatus());

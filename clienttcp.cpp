@@ -1,7 +1,6 @@
 #include <QDebug>
 
 #include "clienttcp.h"
-#include "mainwindow.h"
 
 ClientTcp::ClientTcp() : QObject()
 {

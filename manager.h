@@ -5,6 +5,9 @@
 #include "clienttcp.h"
 #include "menuwindow.h"
 
+class MainWindow;
+class MenuWindow;
+class ClientTcp;
 class Manager : public QObject
 {
     Q_OBJECT
@@ -12,6 +15,9 @@ class Manager : public QObject
 public:
     Manager();
     ~Manager();
+    MainWindow* getInstanceMainWindow();
+    MenuWindow* getInstanceMenuWindow();
+    ClientTcp* getInstanceClientTcp();
 
 public slots:
     void connectionStatus();

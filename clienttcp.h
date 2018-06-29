@@ -4,6 +4,8 @@
 #include <QtNetwork>
 #include <QWidget>
 
+#include "manager.h"
+
 class ClientTcp : public QObject
 {
     Q_OBJECT

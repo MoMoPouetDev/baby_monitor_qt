@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
 {
     this->setFixedSize(480, 320);
 
+    m_menuWindow = m_manager->getInstanceMenuWindow();
+
     m_messagePowerOff = new QMessageBox(this);
 
     m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
@@ -27,8 +29,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_video->setGeometry(10, 13, 380, 214);
     m_player->play();
     m_player->setVolume(50);
-
-    qDebug()<<m_player->isAudioAvailable();
 
     m_buttonMenuOpen = new QPushButton(this);
     m_iconMenuOpen.addFile(m_pathIconMenuOpen);
@@ -283,18 +283,15 @@ void MainWindow::setMessagePowerOff()
 
 void MainWindow::openMenu()
 {
-    m_menuWindow = new MenuWindow(this);
     m_menuWindow->openMenu();
 }
 
 void MainWindow::changeVolumeBar(int volume)
 {
-    m_menuWindow = new MenuWindow(this);
     m_menuWindow->changeVolumeBar(volume);
 }
 
 void MainWindow::muteVolumeBar(bool mute)
 {
-    m_menuWindow = new MenuWindow(this);
     m_menuWindow->muteVolumeBar(mute);
 }

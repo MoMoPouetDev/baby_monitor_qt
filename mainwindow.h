@@ -17,6 +17,7 @@
 #include <QAudioProbe>
 
 #include "menuwindow.h"
+#include "manager.h"
 
 #define PATH_ICON_MENU_OPEN    "/home/morgan/git/baby_monitor_qt/images/menuOpen.png"
 #define PATH_VIDEO_URL  "/home/morgan/test1.mp4"
@@ -27,6 +28,8 @@
 #define MAX_VALUE_MIDDLE    90
 #define MIN_VALUE_HIGH  90
 #define MAX_VALUE_HIGH  100
+
+class Manager;
 class MenuWindow;
 class MainWindow : public QWidget
 {
@@ -41,7 +44,6 @@ class MainWindow : public QWidget
     void setMutePlayer(bool);
     void setVolumePlayer(int);
     void setMessagePowerOff();
-    QWidget *getWindow();
 
     public slots:
     void processBuffer(const QAudioBuffer&);
@@ -50,7 +52,9 @@ class MainWindow : public QWidget
     void muteVolumeBar(bool);
 
     private:
+    Manager *m_manager;
     MenuWindow *m_menuWindow;
+
     float previousValueRight = 0, previousValueLeft = 0;
 
     QString m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-top-left-radius: 5px; border-bottom-left-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
