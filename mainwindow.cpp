@@ -69,27 +69,6 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_probe = new QAudioProbe(this);
     QObject::connect(m_probe, SIGNAL(audioBufferProbed(QAudioBuffer)), this, SLOT(processBuffer(const QAudioBuffer&)));
     m_probe->setSource(m_player);
-
-    m_animationBarLow = new QPropertyAnimation(m_progressLow,"Low");
-    m_animationBarLow->setDuration(1000);
-    m_animationBarLow->setStartValue(0);
-    m_animationBarLow->setEndValue(100);
-    m_animationBarLow->setEasingCurve(QEasingCurve::InQuad);
-    m_animationBarLow->start();
-
-    m_animationBarMiddle = new QPropertyAnimation(m_progressMiddle,"Middle");
-    m_animationBarMiddle->setDuration(1000);
-    m_animationBarMiddle->setStartValue(0);
-    m_animationBarMiddle->setEndValue(100);
-    m_animationBarMiddle->setEasingCurve(QEasingCurve::InQuad);
-    m_animationBarMiddle->start();
-
-    m_animationBarHigh = new QPropertyAnimation(m_progressHigh,"High");
-    m_animationBarHigh->setDuration(1000);
-    m_animationBarHigh->setStartValue(0);
-    m_animationBarHigh->setEndValue(100);
-    m_animationBarHigh->setEasingCurve(QEasingCurve::InQuad);
-    m_animationBarHigh->start();
 }
 
 MainWindow::~MainWindow()
@@ -99,6 +78,18 @@ MainWindow::~MainWindow()
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
 {
     float decibel, decibelLow, decibelMiddle, decibelHigh;
+
+    m_animationBarLow = new QPropertyAnimation(m_progressLow,"Low");
+    m_animationBarLow->setDuration(1000);
+    m_animationBarLow->setEasingCurve(QEasingCurve::InQuad);
+
+    m_animationBarMiddle = new QPropertyAnimation(m_progressMiddle,"Middle");
+    m_animationBarMiddle->setDuration(1000);
+    m_animationBarMiddle->setEasingCurve(QEasingCurve::InQuad);
+
+    m_animationBarHigh = new QPropertyAnimation(m_progressHigh,"High");
+    m_animationBarHigh->setDuration(1000);
+    m_animationBarHigh->setEasingCurve(QEasingCurve::InQuad);
 
     QVector<qreal> levels = getBufferLevels(buffer);
 

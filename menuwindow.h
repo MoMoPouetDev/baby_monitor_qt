@@ -14,6 +14,7 @@
 
 #include "mainwindow.h"
 
+#define PATH_ICON_MUSIC_LIBRARY "/home/morgan/git/baby_monitor_qt/images/musicLibrary.png"
 #define PATH_ICON_MENU_CLOSE    "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
 #define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
 #define PATH_ICON_CONNECTION_OFF    "/home/morgan/git/baby_monitor_qt/images/connectionOff.png"
@@ -26,6 +27,7 @@
 #define SOUND_MAX       100
 #define SOUND_MIN       0
 #define SOUND_MARGIN    10
+
 class MainWindow;
 class MenuWindow : public QWidget
 {
@@ -39,6 +41,7 @@ public:
     bool getMutedPlayer();
     void setMutedPlayer(bool);
     void setVolumePlayer(int);
+
 public slots:
     void buttonPlus(void);
     void buttonMinus(void);
@@ -47,11 +50,12 @@ public slots:
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
     void openMenu();
-    //QWidget *getWindow();
 
 private:
     QWidget *m_menuWindow;
+    QWidget *mainWindow;
     MainWindow *m_mainWindow;
+
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
             m_styleWidget = "QWidget {background-color : white}",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
@@ -60,23 +64,27 @@ private:
             m_pathIconMute = PATH_ICON_MUTE,
             m_pathIconNomute = PATH_ICON_NOMUTE,
             m_pathIconSoundUp = PATH_ICON_SOUND_UP,
-            m_pathIconSoundDown = PATH_ICON_SOUND_DOWN;
+            m_pathIconSoundDown = PATH_ICON_SOUND_DOWN,
+            m_pathIconMenuClose = PATH_ICON_MENU_CLOSE,
+            m_pathIconMusicLibrary = PATH_ICON_MUSIC_LIBRARY;
 
-    QIcon m_menuIconClose,
-            m_iconConnectionOn,
-            m_iconConnectionOff,
-            m_iconPower,
-            m_iconMute,
-            m_iconNomute,
-            m_iconSoundUp,
-            m_iconSoundDown;
+    QIcon m_iconMenuClose,
+        m_iconConnectionOn,
+        m_iconConnectionOff,
+        m_iconPower,
+        m_iconMute,
+        m_iconNomute,
+        m_iconSoundUp,
+        m_iconSoundDown,
+        m_iconMusicLibrary;
 
     QPushButton *m_buttonMenuClose,
                 *m_buttonConnection,
                 *m_buttonPower,
                 *m_buttonUp,
                 *m_buttonDown,
-                *m_buttonSound;
+                *m_buttonSound,
+                *m_buttonMusicLibrary;
 
     QProgressBar *m_progressSound;
 };
