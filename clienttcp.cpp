@@ -12,12 +12,19 @@ ClientTcp::ClientTcp() : QObject()
     QObject::connect(m_socketServer, SIGNAL(connected()), this, SLOT(clientConnected()));
     QObject::connect(m_socketServer, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
     QObject::connect(m_socketServer, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(errorSocket(QAbstractSocket::SocketError)));
+    QObject::connect(this, SIGNAL(connectionStatus(bool)), this, SLOT(setConnectionStatus(bool)));
+    QObject::connect(this, SIGNAL(isReadyMenu(MenuWindow*)), this, SLOT(getThisMenuWindow(MenuWindow*)));
 
     m_packetSize = 0;
 }
 
 ClientTcp::~ClientTcp()
 {
+}
+
+ClientTcp* ClientTcp::getThisClientTcp()
+{
+    return this;
 }
 
 void ClientTcp::connection()
@@ -30,14 +37,13 @@ void ClientTcp::connection()
 void ClientTcp::clientConnected()
 {
     qDebug() << "Connected";
-    setConnectionStatus(true);
     sendData("Hello World");
-    emit connectionStatus();
+    emit connectionStatus(true);
 }
 
 void ClientTcp::clientDisconnected()
 {
-    setConnectionStatus(false);
+    emit connectionStatus(false);
 }
 
 void ClientTcp::sendData(QString messageToSend)
@@ -100,10 +106,12 @@ void ClientTcp::errorSocket(QAbstractSocket::SocketError error)
 
 void ClientTcp::setConnectionStatus(bool status)
 {
-    m_connectionStatus = status;
+    m_menuWindow->setConnectionIcon(status);
 }
 
-bool ClientTcp::getConnectionStatus()
+void ClientTcp::getThisMenuWindow(MenuWindow *menu)
 {
-    return m_connectionStatus;
+    m_menuWindow = menu;
+    qDebug()<<&menu;
+    qDebug()<<&m_menuWindow;
 }

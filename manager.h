@@ -19,9 +19,6 @@ public:
     MenuWindow* getInstanceMenuWindow();
     ClientTcp* getInstanceClientTcp();
 
-public slots:
-    void connectionStatus();
-
 private:
     MainWindow *m_mainWindow;
     MenuWindow *m_menuWindow;

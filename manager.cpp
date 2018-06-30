@@ -8,7 +8,8 @@ Manager::Manager() : QObject()
     m_menuWindow = new MenuWindow(m_mainWindow);
     m_client = new ClientTcp;
 
-    QObject::connect(m_client, SIGNAL(connectionStatus()), this, SLOT(connectionStatus()));
+    emit m_mainWindow->isReadyMenu(m_menuWindow);
+    emit m_client->isReadyMenu(m_menuWindow);
 
     m_mainWindow->setShow();
 }
@@ -33,9 +34,4 @@ MenuWindow* Manager::getInstanceMenuWindow()
 ClientTcp* Manager::getInstanceClientTcp()
 {
     return m_client;
-}
-
-void Manager::connectionStatus()
-{
-    m_menuWindow->setConnectionIcon(m_client->getConnectionStatus());
 }

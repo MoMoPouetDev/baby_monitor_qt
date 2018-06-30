@@ -35,8 +35,9 @@ class MenuWindow : public QWidget
     Q_OBJECT
 
 public:
-    MenuWindow(QWidget *parent);
+    MenuWindow(MainWindow* parent);
     ~MenuWindow();
+    MenuWindow* getThisMenuWindow();
     void setConnectionIcon(bool);
     int getVolumeValuePlayer();
     bool getMutedPlayer();
@@ -48,6 +49,7 @@ public slots:
     void buttonMinus(void);
     void buttonMute(void);
     void buttonPower(void);
+    void closeMenu(void);
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
     void openMenu();
@@ -57,7 +59,8 @@ private:
     MainWindow *m_mainWindow;
 
     QString m_style = "QProgressBar {border: 2px solid grey; border-radius: 5px;} QProgressBar::chunk {background-color: #4EE34E; height: 10px; margin: 0.5px;}",
-            m_styleWidget = "QWidget {background-color : white}",
+            m_styleWidget = "QWidget#Menu {border: 2px solid grey; border-radius: 5px; background-color : white}",
+            m_styleButton = "QPushButton {border: none;}",
             m_pathIconConnectionOn = PATH_ICON_CONNECTION_ON,
             m_pathIconConnectionOff = PATH_ICON_CONNECTION_OFF,
             m_pathIconPower = PATH_ICON_POWER_OFF,

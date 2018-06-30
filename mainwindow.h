@@ -38,6 +38,7 @@ class MainWindow : public QWidget
     public:
     MainWindow(QWidget *parent=0);
     ~MainWindow();
+    MainWindow* getThisMainWindow();
     void setShow();
     int getVolumeValuePlayer();
     bool getMutedPlayer();
@@ -50,6 +51,10 @@ class MainWindow : public QWidget
     void openMenu();
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
+    void getThisMenuWindow(MenuWindow*);
+
+    signals:
+    void isReadyMenu(MenuWindow*);
 
     private:
     Manager *m_manager;
@@ -57,9 +62,9 @@ class MainWindow : public QWidget
 
     float previousValueRight = 0, previousValueLeft = 0;
 
-    QString m_styleLow = "QProgressBar {border-top: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-top-left-radius: 5px; border-bottom-left-radius: 5px;} QProgressBar::chunk {background-color: green; width: 3px; margin: 0.5px;}",
-            m_styleMiddle = "QProgressBar {border-top: 2px solid grey; border-bottom: 2px solid grey;} QProgressBar::chunk {background-color: orange; width: 3px; margin: 0.5px;}",
-            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-bottom: 2px solid grey; border-top-right-radius: 5px; border-bottom-right-radius: 5px;} QProgressBar::chunk {background-color: red; width: 3px; margin: 0.5px;}",
+    QString m_styleLow = "QProgressBar {border-right: 2px solid grey; border-left: 2px solid grey; border-bottom: 2px solid grey; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background: transparente;} QProgressBar::chunk {background-color: #4EE34E; height: 3px; margin: 0.5px;}",
+            m_styleMiddle = "QProgressBar {border-right: 2px solid grey; border-left: 2px solid grey; background: transparente;} QProgressBar::chunk {background-color: #FFC200; height: 3px; margin: 0.5px;}",
+            m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-left: 2px solid grey; border-top-right-radius: 5px; border-top-left-radius: 5px; background: transparente;} QProgressBar::chunk {background-color: red; height: 3px; margin: 0.5px;}",
             m_pathIconMenuOpen = PATH_ICON_MENU_OPEN,
             m_reboot = "/sbin/reboot";
 

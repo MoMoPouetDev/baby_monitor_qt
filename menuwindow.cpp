@@ -2,7 +2,7 @@
 
 #include "menuwindow.h"
 
-MenuWindow::MenuWindow(QWidget *parent) : QWidget()
+MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
 {
     m_mainWindow = qobject_cast<MainWindow*>(parent);
     m_menuWindow = new QWidget(parent, Qt::FramelessWindowHint);
@@ -10,8 +10,10 @@ MenuWindow::MenuWindow(QWidget *parent) : QWidget()
     m_menuWindow->setStyleSheet(m_styleWidget);
     m_menuWindow->setFixedSize(100, 240);
     m_menuWindow->move(0,0);
+    m_menuWindow->setObjectName("Menu");
 
     m_buttonMenuClose = new QPushButton(m_menuWindow);
+    m_buttonMenuClose->setFlat(true);
     m_iconMenuClose.addFile(m_pathIconMenuClose);
     m_buttonMenuClose->setIcon(m_iconMenuClose);
     m_buttonMenuClose->setIconSize(QSize(30,30));
@@ -23,7 +25,7 @@ MenuWindow::MenuWindow(QWidget *parent) : QWidget()
     m_iconConnectionOff.addFile(m_pathIconConnectionOff);
     m_buttonConnection->setIcon(m_iconConnectionOff);
     m_buttonConnection->setIconSize(QSize(20,20));
-    m_buttonConnection->setGeometry(45, 0, 20, 20);
+    m_buttonConnection->setGeometry(45, 5, 20, 20);
     m_buttonConnection->setEnabled(false);
 
     m_buttonPower = new QPushButton(m_menuWindow);
@@ -31,7 +33,7 @@ MenuWindow::MenuWindow(QWidget *parent) : QWidget()
     m_iconPower.addFile(m_pathIconPower);
     m_buttonPower->setIcon(m_iconPower);
     m_buttonPower->setIconSize(QSize(20,20));
-    m_buttonPower->setGeometry(70, 0, 20, 20);
+    m_buttonPower->setGeometry(70, 5, 20, 20);
 
     m_buttonMusicLibrary = new QPushButton(m_menuWindow);
     m_buttonMusicLibrary->setFlat(true);
@@ -65,7 +67,6 @@ MenuWindow::MenuWindow(QWidget *parent) : QWidget()
     m_progressSound = new QProgressBar(m_menuWindow);
     m_progressSound->setGeometry(20, 40, 20, 160);
     m_progressSound->setOrientation(Qt::Vertical);
-    qDebug() << "Constructeur set Value";
     m_progressSound->setValue(getVolumeValuePlayer());
     //m_progressSound->setValue(m_mainWindow->getVolumeValuePlayer());
     m_progressSound->setStyleSheet(m_style);
@@ -75,10 +76,16 @@ MenuWindow::MenuWindow(QWidget *parent) : QWidget()
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
     QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
     QObject::connect(m_buttonPower, SIGNAL(clicked()), this, SLOT(buttonPower()));
+    QObject::connect(m_buttonMenuClose, SIGNAL(clicked()), this, SLOT(closeMenu()));
 }
 
 MenuWindow::~MenuWindow()
 {
+}
+
+MenuWindow* MenuWindow::getThisMenuWindow()
+{
+    return this;
 }
 
 void MenuWindow::changeVolumeBar(int volumeValue)
@@ -150,6 +157,11 @@ void MenuWindow::openMenu()
 {
     qDebug() << "openMenu";
     m_menuWindow->show();
+}
+
+void MenuWindow::closeMenu()
+{
+    m_menuWindow->hide();
 }
 
 void MenuWindow::setConnectionIcon(bool connectionStatus)

@@ -6,6 +6,7 @@
 
 #include "manager.h"
 
+class MenuWindow;
 class ClientTcp : public QObject
 {
     Q_OBJECT
@@ -13,24 +14,26 @@ class ClientTcp : public QObject
 public:
     ClientTcp();
     ~ClientTcp();
+    ClientTcp* getThisClientTcp();
     void connection();
     void sendData(QString);
-    void setConnectionStatus(bool);
-    bool getConnectionStatus();
 
 public slots:
     void receivedData();
     void clientConnected();
     void clientDisconnected();
     void errorSocket(QAbstractSocket::SocketError);
+    void getThisMenuWindow(MenuWindow*);
+    void setConnectionStatus(bool);
 
 signals:
-    void connectionStatus();
+    void connectionStatus(bool);
+    void isReadyMenu(MenuWindow*);
 
 private:
+    MenuWindow* m_menuWindow;
     QTcpSocket *m_socketServer;
     quint16 m_packetSize;
-    bool m_connectionStatus = false;
 };
 
 #endif // CLIENT_H

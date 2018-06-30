@@ -16,9 +16,7 @@ static QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
 
 MainWindow::MainWindow(QWidget *parent) : QWidget()
 {
-    this->setFixedSize(480, 320);
-
-    m_menuWindow = m_manager->getInstanceMenuWindow();
+    this->setFixedSize(800, 480);
 
     m_messagePowerOff = new QMessageBox(this);
 
@@ -26,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_video = new QVideoWidget(this);
     m_player->setMedia(QUrl::fromLocalFile(PATH_VIDEO_URL));
     m_player->setVideoOutput(m_video);
-    m_video->setGeometry(10, 13, 380, 214);
+    m_video->setFixedSize(800, 480);
     m_player->play();
     m_player->setVolume(50);
 
@@ -37,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_buttonMenuOpen->setGeometry(0, 0, 30, 30);
 
     m_progressLow = new QProgressBar(this);
-    m_progressLow->setGeometry(10, 270, 240, 30);
+    m_progressLow->setGeometry(750, 200, 30, 240);
+    m_progressLow->setOrientation(Qt::Vertical);
     m_progressLow->setMinimum(MIN_VALUE_LOW);
     m_progressLow->setMaximum(MAX_VALUE_LOW);
     m_progressLow->setValue(0);
@@ -45,7 +44,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_progressLow->setTextVisible(false);
 
     m_progressMiddle = new QProgressBar(this);
-    m_progressMiddle->setGeometry(247, 270, 120, 30);
+    m_progressMiddle->setGeometry(750, 80, 30, 120);
+    m_progressMiddle->setOrientation(Qt::Vertical);
     m_progressMiddle->setMinimum(MIN_VALUE_MIDDLE);
     m_progressMiddle->setMaximum(MAX_VALUE_MIDDLE);
     m_progressMiddle->setValue(0);
@@ -53,7 +53,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_progressMiddle->setTextVisible(false);
 
     m_progressHigh = new QProgressBar(this);
-    m_progressHigh->setGeometry(364, 270, 40, 30);
+    m_progressHigh->setGeometry(750, 40, 30, 40);
+    m_progressHigh->setOrientation(Qt::Vertical);
     m_progressHigh->setMinimum(MIN_VALUE_HIGH);
     m_progressHigh->setMaximum(MAX_VALUE_HIGH);
     m_progressHigh->setValue(0);
@@ -63,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     QObject::connect(m_buttonMenuOpen, SIGNAL(clicked()), this, SLOT(openMenu()));
     QObject::connect(m_player, SIGNAL(volumeChanged(int)), this, SLOT(changeVolumeBar(int)));
     QObject::connect(m_player, SIGNAL(mutedChanged(bool)), this, SLOT(muteVolumeBar(bool)));
+    QObject::connect(this, SIGNAL(isReadyMenu(MenuWindow*)), this, SLOT(getThisMenuWindow(MenuWindow*)));
 
     m_process = new QProcess(this);
 
@@ -73,6 +75,11 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
 
 MainWindow::~MainWindow()
 {
+}
+
+MainWindow* MainWindow::getThisMainWindow()
+{
+    return this;
 }
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
@@ -294,4 +301,11 @@ void MainWindow::changeVolumeBar(int volume)
 void MainWindow::muteVolumeBar(bool mute)
 {
     m_menuWindow->muteVolumeBar(mute);
+}
+
+void MainWindow::getThisMenuWindow(MenuWindow *menu)
+{
+    m_menuWindow = menu;
+    qDebug()<<&menu;
+    qDebug()<<&m_menuWindow;
 }
