@@ -9,11 +9,13 @@ HEADERS += \
     mainwindow.h \
     manager.h \
     clienttcp.h \
-    menuwindow.h
+    menuwindow.h \
+    menumusicwindow.h
 
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
     manager.cpp \
     clienttcp.cpp \
-    menuwindow.cpp
+    menuwindow.cpp \
+    menumusicwindow.cpp

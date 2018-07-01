@@ -31,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_buttonMenuOpen = new QPushButton(this);
     m_iconMenuOpen.addFile(m_pathIconMenuOpen);
     m_buttonMenuOpen->setIcon(m_iconMenuOpen);
-    m_buttonMenuOpen->setIconSize(QSize(30,30));
-    m_buttonMenuOpen->setGeometry(0, 0, 30, 30);
+    m_buttonMenuOpen->setIconSize(QSize(25,25));
+    m_buttonMenuOpen->setGeometry(0, 0, 25, 25);
 
     m_progressLow = new QProgressBar(this);
     m_progressLow->setGeometry(750, 200, 30, 240);

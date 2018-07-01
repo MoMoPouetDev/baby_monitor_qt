@@ -16,8 +16,8 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     m_buttonMenuClose->setFlat(true);
     m_iconMenuClose.addFile(m_pathIconMenuClose);
     m_buttonMenuClose->setIcon(m_iconMenuClose);
-    m_buttonMenuClose->setIconSize(QSize(30,30));
-    m_buttonMenuClose->setGeometry(0, 0, 30, 30);
+    m_buttonMenuClose->setIconSize(QSize(25,25));
+    m_buttonMenuClose->setGeometry(0, 0, 25, 25);
 
     m_buttonConnection = new QPushButton(m_menuWindow);
     m_buttonConnection->setFlat(true);
@@ -35,19 +35,23 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     m_buttonPower->setIconSize(QSize(20,20));
     m_buttonPower->setGeometry(70, 5, 20, 20);
 
+    m_groupPlayer = new QGroupBox("Remote", m_menuWindow);
+    m_groupPlayer->setGeometry(5, 30, 90, 200);
+
     m_buttonMusicLibrary = new QPushButton(m_menuWindow);
     m_buttonMusicLibrary->setFlat(true);
     m_iconMusicLibrary.addFile(m_pathIconMusicLibrary);
     m_buttonMusicLibrary->setIcon(m_iconMusicLibrary);
     m_buttonMusicLibrary->setIconSize(QSize(20,20));
-    m_buttonMusicLibrary->setGeometry(60, 60, 20, 20);
+    m_buttonMusicLibrary->setGeometry(60, 80, 20, 20);
+    m_buttonMusicLibrary->setEnabled(false);
 
     m_buttonUp = new QPushButton(m_menuWindow);
     m_buttonUp->setFlat(true);
     m_iconSoundUp.addFile(m_pathIconSoundUp);
     m_buttonUp->setIcon(m_iconSoundUp);
     m_buttonUp->setIconSize(QSize(20,20));
-    m_buttonUp->setGeometry(60, 90, 20, 20);
+    m_buttonUp->setGeometry(60, 110, 20, 20);
 
     m_buttonSound = new QPushButton(m_menuWindow);
     m_buttonSound->setFlat(true);
@@ -55,20 +59,19 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     m_iconMute.addFile(m_pathIconMute);
     m_buttonSound->setIcon(m_iconNomute);
     m_buttonSound->setIconSize(QSize(20,20));
-    m_buttonSound->setGeometry(60, 120, 20, 20);
+    m_buttonSound->setGeometry(60, 140, 20, 20);
 
     m_buttonDown = new QPushButton(m_menuWindow);
     m_buttonDown->setFlat(true);
     m_iconSoundDown.addFile(m_pathIconSoundDown);
     m_buttonDown->setIcon(m_iconSoundDown);
     m_buttonDown->setIconSize(QSize(20,20));
-    m_buttonDown->setGeometry(60, 150, 20, 20);
+    m_buttonDown->setGeometry(60, 170, 20, 20);
 
     m_progressSound = new QProgressBar(m_menuWindow);
-    m_progressSound->setGeometry(20, 40, 20, 160);
+    m_progressSound->setGeometry(20, 60, 20, 160);
     m_progressSound->setOrientation(Qt::Vertical);
     m_progressSound->setValue(getVolumeValuePlayer());
-    //m_progressSound->setValue(m_mainWindow->getVolumeValuePlayer());
     m_progressSound->setStyleSheet(m_style);
     m_progressSound->setTextVisible(false);
 
@@ -77,6 +80,8 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
     QObject::connect(m_buttonPower, SIGNAL(clicked()), this, SLOT(buttonPower()));
     QObject::connect(m_buttonMenuClose, SIGNAL(clicked()), this, SLOT(closeMenu()));
+    QObject::connect(m_buttonMusicLibrary, SIGNAL(clicked()), this, SLOT(buttonLibrary()));
+    QObject::connect(this, SIGNAL(isReadyMusic(MenuMusicWindow*)), this, SLOT(getThisMenuMusicWindow(MenuMusicWindow*)));
 }
 
 MenuWindow::~MenuWindow()
@@ -161,15 +166,36 @@ void MenuWindow::openMenu()
 
 void MenuWindow::closeMenu()
 {
+    m_menuMusicWindow->closeMenu();
     m_menuWindow->hide();
+}
+
+void MenuWindow::buttonLibrary()
+{
+    if(!isLibraryOpen)
+    {
+        m_menuMusicWindow->openMenu();
+        isLibraryOpen = true;
+    }
+    else
+    {
+        m_menuMusicWindow->closeMenu();
+        isLibraryOpen = false;
+    }
 }
 
 void MenuWindow::setConnectionIcon(bool connectionStatus)
 {
     if(connectionStatus)
+    {
         m_buttonConnection->setIcon(m_iconConnectionOn);
+        m_buttonMusicLibrary->setEnabled(true);
+    }
     else
+    {
         m_buttonConnection->setIcon(m_iconConnectionOff);
+        m_buttonMusicLibrary->setEnabled(false);
+    }
 }
 
 int MenuWindow::getVolumeValuePlayer()
@@ -194,4 +220,9 @@ void MenuWindow::setMutedPlayer(bool mute)
 void MenuWindow::setVolumePlayer(int volume)
 {
     m_mainWindow->setVolumePlayer(volume);
+}
+
+void MenuWindow::getThisMenuMusicWindow(MenuMusicWindow *Library)
+{
+    m_menuMusicWindow = Library;
 }
