@@ -10,7 +10,8 @@ HEADERS += \
     manager.h \
     clienttcp.h \
     menuwindow.h \
-    menumusicwindow.h
+    menumusicwindow.h \
+    decoder.h
 
 SOURCES += \
     main.cpp \
@@ -18,4 +19,5 @@ SOURCES += \
     manager.cpp \
     clienttcp.cpp \
     menuwindow.cpp \
-    menumusicwindow.cpp
+    menumusicwindow.cpp \
+    decoder.cpp

@@ -54,6 +54,8 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
     QStringList list = liste.filter(".png");
     /*list << "test"
             << "test1";*/
+    QString lstring = list.join(";");
+    qDebug() << lstring;
     mode->setStringList(list);
 
     QListView *m_List = new QListView(m_menuMusicWindow);
