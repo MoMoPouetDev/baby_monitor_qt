@@ -9,9 +9,10 @@
 #include "manager.h"
 
 class ClientTcp;
+class MenuMusicWindow;
 class Decoder : public QObject
 {
-    //Q_OBJECT
+    Q_OBJECT
 
     public:
         Decoder();
@@ -21,12 +22,15 @@ class Decoder : public QObject
 
     private slots:
         void getThisClient(ClientTcp*);
+        void getThisMenuMusicWindow(MenuMusicWindow*);
 
     signals:
         void isReadyClient(ClientTcp*);
+        void isReadyMenuMusicWindow(MenuMusicWindow*);
 
     private:
         ClientTcp *m_client;
+        MenuMusicWindow *m_menuMusicWindow;
 };
 
 #endif // DECODER_H

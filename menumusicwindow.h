@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QString>
+#include <QListView>
+#include <QStringListModel>
 
 #include "manager.h"
 
@@ -13,6 +15,7 @@
 
 class MainWindow;
 class MenuWindow;
+class ClientTcp;
 class MenuMusicWindow : public QWidget
 {
     Q_OBJECT
@@ -23,13 +26,19 @@ public:
     MenuMusicWindow* getThisMenuMusicWindow();
     void openMenu();
     void closeMenu();
+    void stringList(const QStringList);
 
 public slots:
-    void index(QModelIndex);
+    void sendSelectedMusic(QModelIndex);
+    void getThisClient(ClientTcp*);
+
+signals:
+    void isReadyClient(ClientTcp*);
 
 private:
     QWidget* m_menuMusicWindow;
     MainWindow* m_mainWindow;
+    ClientTcp *m_client;
 
     QGroupBox *m_groupMusic;
 
@@ -51,6 +60,12 @@ private:
                 *m_buttonSound;
 
     QProgressBar *m_progressSound;
+
+    QStringListModel *m_listModel;
+    QStringList m_library;
+    QString m_libraryString;
+    QListView *m_listView;
+
 
 };
 

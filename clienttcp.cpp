@@ -14,6 +14,7 @@ ClientTcp::ClientTcp() : QObject()
     QObject::connect(m_socketServer, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(errorSocket(QAbstractSocket::SocketError)));
     QObject::connect(this, SIGNAL(connectionStatus(bool)), this, SLOT(setConnectionStatus(bool)));
     QObject::connect(this, SIGNAL(isReadyMenu(MenuWindow*)), this, SLOT(getThisMenuWindow(MenuWindow*)));
+    QObject::connect(this, SIGNAL(isReadyDecoder(Decoder*)), this, SLOT(getThisDecoder(Decoder*)));
 
     m_packetSize = 0;
 }
@@ -31,13 +32,12 @@ void ClientTcp::connection()
 {
     qDebug() << "Connecting...";
     m_socketServer->abort();
-    m_socketServer->connectToHost("192.168.0.101", 50885);
+    m_socketServer->connectToHost("192.168.1.36", 50885);
 }
 
 void ClientTcp::clientConnected()
 {
     qDebug() << "Connected";
-    sendData("Hello World");
     emit connectionStatus(true);
 }
 
@@ -51,7 +51,7 @@ void ClientTcp::sendData(QString messageToSend)
     QByteArray packet;
     QDataStream out(&packet, QIODevice::WriteOnly);
 
-    qDebug() << messageToSend;
+    qDebug() << "sendData" + messageToSend;
 
     out << (quint16) 0;
     out << messageToSend;
@@ -80,6 +80,8 @@ void ClientTcp::receivedData()
     in >> receivedMessage;
 
     qDebug() << receivedMessage;
+
+    m_decoder->decodeString(receivedMessage);
 
     m_packetSize = 0;
 }
@@ -112,6 +114,9 @@ void ClientTcp::setConnectionStatus(bool status)
 void ClientTcp::getThisMenuWindow(MenuWindow *menu)
 {
     m_menuWindow = menu;
-    qDebug()<<&menu;
-    qDebug()<<&m_menuWindow;
+}
+
+void ClientTcp::getThisDecoder(Decoder *decoder)
+{
+    m_decoder = decoder;
 }

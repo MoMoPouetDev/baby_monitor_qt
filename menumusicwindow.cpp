@@ -49,25 +49,19 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
     m_progressSound->setTextVisible(false);
 
     /************* TEST LIST VIEW *******/
-    QStringListModel *mode = new QStringListModel(m_menuMusicWindow);
-    QStringList liste(QDir("/home/morgan/git/baby_monitor_qt/images/").entryList());
-    QStringList list = liste.filter(".png");
-    /*list << "test"
-            << "test1";*/
-    QString lstring = list.join(";");
-    qDebug() << lstring;
-    mode->setStringList(list);
+    m_listModel = new QStringListModel(m_menuMusicWindow);
 
-    QListView *m_List = new QListView(m_menuMusicWindow);
-    m_List->setSelectionRectVisible(true);
-    m_List->setGeometry(10, 95, 130, 135);
-    m_List->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_listView = new QListView(m_menuMusicWindow);
+    m_listView->setSelectionRectVisible(true);
+    m_listView->setGeometry(10, 95, 130, 135);
+    m_listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    m_List->setModel(mode);
 
-    QObject::connect(m_List, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(index(QModelIndex)));
+    QObject::connect(m_listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(sendSelectedMusic(QModelIndex)));
 
     /***************************************************/
+    QObject::connect(this, SIGNAL(isReadyClient(ClientTcp*)), this, SLOT(getThisClient(ClientTcp*)));
+
 }
 
 MenuMusicWindow::~MenuMusicWindow()
@@ -79,8 +73,14 @@ MenuMusicWindow* MenuMusicWindow::getThisMenuMusicWindow()
     return this;
 }
 
+void MenuMusicWindow::getThisClient(ClientTcp *client)
+{
+    m_client = client;
+}
+
 void MenuMusicWindow::openMenu()
 {
+    m_client->sendData("Library");
     m_menuMusicWindow->show();
 }
 
@@ -89,7 +89,17 @@ void MenuMusicWindow::closeMenu()
     m_menuMusicWindow->hide();
 }
 
-void MenuMusicWindow::index(QModelIndex index)
+void MenuMusicWindow::sendSelectedMusic(QModelIndex index)
 {
-    qDebug() << index.row();
+    QString selectedMusic = m_library.at(index.row());
+    selectedMusic = selectedMusic.insert(0,"Play;");
+    qDebug() << selectedMusic;
+}
+
+void MenuMusicWindow::stringList(const QStringList list)
+{
+    m_library = list;
+    m_listModel->setStringList(m_library);
+    m_listView->setModel(m_listModel);
+
 }

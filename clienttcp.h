@@ -7,6 +7,7 @@
 #include "manager.h"
 
 class MenuWindow;
+class Decoder;
 class ClientTcp : public QObject
 {
     Q_OBJECT
@@ -24,14 +25,17 @@ public slots:
     void clientDisconnected();
     void errorSocket(QAbstractSocket::SocketError);
     void getThisMenuWindow(MenuWindow*);
+    void getThisDecoder(Decoder*);
     void setConnectionStatus(bool);
 
 signals:
     void connectionStatus(bool);
     void isReadyMenu(MenuWindow*);
+    void isReadyDecoder(Decoder*);
 
 private:
     MenuWindow* m_menuWindow;
+    Decoder *m_decoder;
     QTcpSocket *m_socketServer;
     quint16 m_packetSize;
 };
