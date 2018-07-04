@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     QObject::connect(m_player, SIGNAL(volumeChanged(int)), this, SLOT(changeVolumeBar(int)));
     QObject::connect(m_player, SIGNAL(mutedChanged(bool)), this, SLOT(muteVolumeBar(bool)));
     QObject::connect(this, SIGNAL(isReadyMenu(MenuWindow*)), this, SLOT(getThisMenuWindow(MenuWindow*)));
+    QObject::connect(this, SIGNAL(isReadyClient(ClientTcp*)), this, SLOT(getThisClient(ClientTcp*)));
 
     m_process = new QProcess(this);
 
@@ -80,6 +81,16 @@ MainWindow::~MainWindow()
 MainWindow* MainWindow::getThisMainWindow()
 {
     return this;
+}
+
+void MainWindow::getThisMenuWindow(MenuWindow *menu)
+{
+    m_menuWindow = menu;
+}
+
+void MainWindow::getThisClient(ClientTcp *client)
+{
+    m_client = client;
 }
 
 void MainWindow::processBuffer(const QAudioBuffer& buffer)
@@ -284,7 +295,8 @@ void MainWindow::setMessagePowerOff()
     if(ret == QMessageBox::Yes)
     {
         //ShutDown
-        m_process->startDetached(getReboot());
+        m_client->sendData("PowerOff");
+        m_process->startDetached(m_powerOff);
     }
 }
 
@@ -301,11 +313,4 @@ void MainWindow::changeVolumeBar(int volume)
 void MainWindow::muteVolumeBar(bool mute)
 {
     m_menuWindow->muteVolumeBar(mute);
-}
-
-void MainWindow::getThisMenuWindow(MenuWindow *menu)
-{
-    m_menuWindow = menu;
-    qDebug()<<&menu;
-    qDebug()<<&m_menuWindow;
 }

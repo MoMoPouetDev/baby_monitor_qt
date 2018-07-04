@@ -27,6 +27,8 @@ public:
     void openMenu();
     void closeMenu();
     void stringList(const QStringList);
+    void setVolumeBar(int);
+    void setIconMute(bool);
 
 public slots:
     void sendSelectedMusic(QModelIndex);

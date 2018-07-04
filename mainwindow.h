@@ -31,6 +31,7 @@
 
 class Manager;
 class MenuWindow;
+class ClientTcp;
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -52,13 +53,16 @@ class MainWindow : public QWidget
     void changeVolumeBar(int);
     void muteVolumeBar(bool);
     void getThisMenuWindow(MenuWindow*);
+    void getThisClient(ClientTcp*);
 
     signals:
     void isReadyMenu(MenuWindow*);
+    void isReadyClient(ClientTcp*);
 
     private:
     Manager *m_manager;
     MenuWindow *m_menuWindow;
+    ClientTcp *m_client;
 
     float previousValueRight = 0, previousValueLeft = 0;
 
@@ -66,7 +70,7 @@ class MainWindow : public QWidget
             m_styleMiddle = "QProgressBar {border-right: 2px solid grey; border-left: 2px solid grey; background: transparente;} QProgressBar::chunk {background-color: #FFC200; height: 3px; margin: 0.5px;}",
             m_styleHigh = "QProgressBar {border-top: 2px solid grey; border-right: 2px solid grey; border-left: 2px solid grey; border-top-right-radius: 5px; border-top-left-radius: 5px; background: transparente;} QProgressBar::chunk {background-color: red; height: 3px; margin: 0.5px;}",
             m_pathIconMenuOpen = PATH_ICON_MENU_OPEN,
-            m_reboot = "/sbin/reboot";
+            m_powerOff = "/sbin/shutdown now";
 
     QIcon m_iconMenuOpen;
 
@@ -89,11 +93,6 @@ class MainWindow : public QWidget
                         *m_animationBarHigh;
 
     QAudioProbe *m_probe;
-
-    QString getReboot()
-    {
-        return m_reboot;
-    }
 };
 
 #endif // MAINWINDOW_H

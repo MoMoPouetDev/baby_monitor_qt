@@ -87,6 +87,7 @@ void MenuMusicWindow::sendSelectedMusic(QModelIndex index)
 void MenuMusicWindow::buttonMinus()
 {
     m_client->sendData("SoundDown");
+    m_buttonSound->setIcon(m_iconNomute);
 }
 
 void MenuMusicWindow::buttonMute()
@@ -97,12 +98,12 @@ void MenuMusicWindow::buttonMute()
 void MenuMusicWindow::buttonPlus()
 {
     m_client->sendData("SoundUp");
+    m_buttonSound->setIcon(m_iconNomute);
 }
 
 void MenuMusicWindow::openMenu()
 {
     m_client->sendData("Library");
-    m_client->sendData("Volume");
     m_menuMusicWindow->show();
 }
 
@@ -117,4 +118,19 @@ void MenuMusicWindow::stringList(const QStringList list)
     m_listModel->setStringList(m_library);
     m_listView->setModel(m_listModel);
 
+}
+
+void MenuMusicWindow::setVolumeBar(int volume)
+{
+    m_progressSound->setValue(volume);
+}
+
+void MenuMusicWindow::setIconMute(bool mute)
+{
+    if (mute) {
+        m_buttonSound->setIcon(m_iconMute);
+    }
+    else {
+        m_buttonSound->setIcon(m_iconNomute);
+    }
 }

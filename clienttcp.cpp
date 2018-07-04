@@ -32,7 +32,7 @@ void ClientTcp::connection()
 {
     qDebug() << "Connecting...";
     m_socketServer->abort();
-    m_socketServer->connectToHost("192.168.1.36", 50885);
+    m_socketServer->connectToHost("192.168.1.37", 50885);
 }
 
 void ClientTcp::clientConnected()
@@ -51,7 +51,7 @@ void ClientTcp::sendData(QString messageToSend)
     QByteArray packet;
     QDataStream out(&packet, QIODevice::WriteOnly);
 
-    qDebug() << "sendData" + messageToSend;
+    qDebug() << "Client sendData : " + messageToSend;
 
     out << (quint16) 0;
     out << messageToSend;
@@ -79,7 +79,7 @@ void ClientTcp::receivedData()
     QString receivedMessage;
     in >> receivedMessage;
 
-    qDebug() << receivedMessage;
+    qDebug() << "Server received data : "+receivedMessage;
 
     m_decoder->decodeString(receivedMessage);
 
