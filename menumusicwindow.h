@@ -31,6 +31,9 @@ public:
 public slots:
     void sendSelectedMusic(QModelIndex);
     void getThisClient(ClientTcp*);
+    void buttonPlus(void);
+    void buttonMinus(void);
+    void buttonMute(void);
 
 signals:
     void isReadyClient(ClientTcp*);

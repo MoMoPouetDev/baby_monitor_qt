@@ -43,12 +43,10 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
 
     m_progressSound = new QProgressBar(m_menuMusicWindow);
     m_progressSound->setGeometry(10, 35, 130, 20);
-    //m_progressSound->setOrientation(Qt::Vertical);
-    m_progressSound->setValue(100);
+    m_progressSound->setValue(0);
     m_progressSound->setStyleSheet(m_styleProgress);
     m_progressSound->setTextVisible(false);
 
-    /************* TEST LIST VIEW *******/
     m_listModel = new QStringListModel(m_menuMusicWindow);
 
     m_listView = new QListView(m_menuMusicWindow);
@@ -56,10 +54,10 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
     m_listView->setGeometry(10, 95, 130, 135);
     m_listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-
-    QObject::connect(m_listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(sendSelectedMusic(QModelIndex)));
-
-    /***************************************************/
+    QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
+    QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
+    QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
+    QObject::connect(m_listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(sendSelectedMusic(QModelIndex)));    
     QObject::connect(this, SIGNAL(isReadyClient(ClientTcp*)), this, SLOT(getThisClient(ClientTcp*)));
 
 }
@@ -78,22 +76,39 @@ void MenuMusicWindow::getThisClient(ClientTcp *client)
     m_client = client;
 }
 
+void MenuMusicWindow::sendSelectedMusic(QModelIndex index)
+{
+    QString selectedMusic = m_library.at(index.row());
+    selectedMusic = selectedMusic.insert(0,"Play;");
+    qDebug() << selectedMusic;
+    m_client->sendData(selectedMusic);
+}
+
+void MenuMusicWindow::buttonMinus()
+{
+    m_client->sendData("SoundDown");
+}
+
+void MenuMusicWindow::buttonMute()
+{
+    m_client->sendData("SoundMute");
+}
+
+void MenuMusicWindow::buttonPlus()
+{
+    m_client->sendData("SoundUp");
+}
+
 void MenuMusicWindow::openMenu()
 {
     m_client->sendData("Library");
+    m_client->sendData("Volume");
     m_menuMusicWindow->show();
 }
 
 void MenuMusicWindow::closeMenu()
 {
     m_menuMusicWindow->hide();
-}
-
-void MenuMusicWindow::sendSelectedMusic(QModelIndex index)
-{
-    QString selectedMusic = m_library.at(index.row());
-    selectedMusic = selectedMusic.insert(0,"Play;");
-    qDebug() << selectedMusic;
 }
 
 void MenuMusicWindow::stringList(const QStringList list)

@@ -34,12 +34,11 @@ void Decoder::decodeString(const QString &message)
     qDebug()<<"Decder: " + message;
 
     QRegExp regex("\\;");
-    QStringList list = message.split(regex);
+    QStringList string = message.split(regex);
 
-    if(list.at(0) == "Library")
-    {
-        list.removeFirst();
+    if (string.at(0) == "Library") {
+        string.removeFirst();
 
-        m_menuMusicWindow->stringList(list);
+        m_menuMusicWindow->stringList(string);
     }
 }
