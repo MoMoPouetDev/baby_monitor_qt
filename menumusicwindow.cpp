@@ -78,6 +78,7 @@ void MenuMusicWindow::getThisClient(ClientTcp *client)
 
 void MenuMusicWindow::sendSelectedMusic(QModelIndex index)
 {
+    m_index = index;
     QString selectedMusic = m_library.at(index.row());
     selectedMusic = selectedMusic.insert(0,"Play;");
     qDebug() << selectedMusic;
@@ -116,6 +117,8 @@ void MenuMusicWindow::stringList(const QStringList list)
 {
     m_library = list;
     m_listModel->setStringList(m_library);
+    m_listView->setCurrentIndex(m_index);
+    m_listView->setFocus();
     m_listView->setModel(m_listModel);
 
 }

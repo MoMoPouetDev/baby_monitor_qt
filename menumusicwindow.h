@@ -66,6 +66,7 @@ private:
 
     QProgressBar *m_progressSound;
 
+    QModelIndex m_index;
     QStringListModel *m_listModel;
     QStringList m_library;
     QString m_libraryString;
