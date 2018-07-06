@@ -12,6 +12,8 @@
 #define PATH_ICON_NOMUTE "/home/morgan/git/baby_monitor_qt/images/soundNoMute.png"
 #define PATH_ICON_SOUND_UP "/home/morgan/git/baby_monitor_qt/images/soundUp.png"
 #define PATH_ICON_SOUND_DOWN "/home/morgan/git/baby_monitor_qt/images/soundDown.png"
+#define PATH_ICON_STOP "/home/morgan/git/baby_monitor_qt/images/stop.png"
+#define PATH_ICON_PLAY "/home/morgan/git/baby_monitor_qt/images/play.png"
 
 class MainWindow;
 class MenuWindow;
@@ -36,6 +38,7 @@ public slots:
     void buttonPlus(void);
     void buttonMinus(void);
     void buttonMute(void);
+    void buttonStop(void);
 
 signals:
     void isReadyClient(ClientTcp*);
@@ -53,16 +56,21 @@ private:
             m_pathIconMute = PATH_ICON_MUTE,
             m_pathIconNomute = PATH_ICON_NOMUTE,
             m_pathIconSoundUp = PATH_ICON_SOUND_UP,
-            m_pathIconSoundDown = PATH_ICON_SOUND_DOWN;
+            m_pathIconSoundDown = PATH_ICON_SOUND_DOWN,
+            m_pathIconStop = PATH_ICON_STOP,
+            m_pathIconPlay = PATH_ICON_PLAY;
 
     QIcon m_iconMute,
         m_iconNomute,
         m_iconSoundUp,
-        m_iconSoundDown;
+        m_iconSoundDown,
+        m_iconStop,
+        m_iconPlay;
 
     QPushButton *m_buttonUp,
                 *m_buttonDown,
-                *m_buttonSound;
+                *m_buttonSound,
+                *m_buttonStop;
 
     QProgressBar *m_progressSound;
 

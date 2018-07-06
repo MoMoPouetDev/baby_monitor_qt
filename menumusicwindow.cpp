@@ -24,7 +24,7 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
     m_iconSoundUp.addFile(m_pathIconSoundUp);
     m_buttonUp->setIcon(m_iconSoundUp);
     m_buttonUp->setIconSize(QSize(20,20));
-    m_buttonUp->setGeometry(95, 65, 20, 20);
+    m_buttonUp->setGeometry(80, 65, 20, 20);
 
     m_buttonSound = new QPushButton(m_menuMusicWindow);
     m_buttonSound->setFlat(true);
@@ -32,14 +32,23 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
     m_iconMute.addFile(m_pathIconMute);
     m_buttonSound->setIcon(m_iconNomute);
     m_buttonSound->setIconSize(QSize(20,20));
-    m_buttonSound->setGeometry(65, 65, 20, 20);
+    m_buttonSound->setGeometry(50, 65, 20, 20);
 
     m_buttonDown = new QPushButton(m_menuMusicWindow);
     m_buttonDown->setFlat(true);
     m_iconSoundDown.addFile(m_pathIconSoundDown);
     m_buttonDown->setIcon(m_iconSoundDown);
     m_buttonDown->setIconSize(QSize(20,20));
-    m_buttonDown->setGeometry(35, 65, 20, 20);
+    m_buttonDown->setGeometry(20, 65, 20, 20);
+
+    m_buttonStop = new QPushButton(m_menuMusicWindow);
+    m_buttonStop->setFlat(true);
+    m_iconStop.addFile(m_pathIconStop);
+    m_iconPlay.addFile(m_pathIconPlay);
+    m_buttonStop->setIcon(m_iconPlay);
+    m_buttonStop->setIconSize(QSize(20,20));
+    m_buttonStop->setGeometry(110, 65, 20, 20);
+    m_buttonStop->setEnabled(false);
 
     m_progressSound = new QProgressBar(m_menuMusicWindow);
     m_progressSound->setGeometry(10, 35, 130, 20);
@@ -57,6 +66,7 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
     QObject::connect(m_buttonUp, SIGNAL(clicked()), this, SLOT(buttonPlus()));
     QObject::connect(m_buttonDown, SIGNAL(clicked()), this, SLOT(buttonMinus()));
     QObject::connect(m_buttonSound, SIGNAL(clicked()), this, SLOT(buttonMute()));
+    QObject::connect(m_buttonStop, SIGNAL(clicked()), this, SLOT(buttonStop()));
     QObject::connect(m_listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(sendSelectedMusic(QModelIndex)));    
     QObject::connect(this, SIGNAL(isReadyClient(ClientTcp*)), this, SLOT(getThisClient(ClientTcp*)));
 
@@ -83,6 +93,9 @@ void MenuMusicWindow::sendSelectedMusic(QModelIndex index)
     selectedMusic = selectedMusic.insert(0,"Play;");
     qDebug() << selectedMusic;
     m_client->sendData(selectedMusic);
+
+    m_buttonStop->setIcon(m_iconStop);
+    m_buttonStop->setEnabled(true);
 }
 
 void MenuMusicWindow::buttonMinus()
@@ -100,6 +113,13 @@ void MenuMusicWindow::buttonPlus()
 {
     m_client->sendData("SoundUp");
     m_buttonSound->setIcon(m_iconNomute);
+}
+
+void MenuMusicWindow::buttonStop()
+{
+    m_client->sendData("SoundStop");
+    m_buttonStop->setIcon(m_iconPlay);
+    m_buttonStop->setEnabled(false);
 }
 
 void MenuMusicWindow::openMenu()
