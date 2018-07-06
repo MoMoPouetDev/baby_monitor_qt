@@ -21,6 +21,7 @@ ClientTcp::ClientTcp() : QObject()
 
 ClientTcp::~ClientTcp()
 {
+    m_socketServer->deleteLater();
 }
 
 ClientTcp* ClientTcp::getThisClientTcp()

@@ -74,6 +74,15 @@ MenuMusicWindow::MenuMusicWindow(MainWindow *parent) : QWidget()
 
 MenuMusicWindow::~MenuMusicWindow()
 {
+    m_menuMusicWindow->deleteLater();
+    m_groupMusic->deleteLater();
+    m_buttonUp->deleteLater();
+    m_buttonSound->deleteLater();
+    m_buttonDown->deleteLater();
+    m_buttonStop->deleteLater();
+    m_progressSound->deleteLater();
+    m_listModel->deleteLater();
+    m_listView->deleteLater();
 }
 
 MenuMusicWindow* MenuMusicWindow::getThisMenuMusicWindow()
