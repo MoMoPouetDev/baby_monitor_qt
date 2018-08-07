@@ -1,3 +1,6 @@
+target.path = /home/pi/
+INSTALLS += target
+
 QT += widgets
 QT += multimedia
 QT += multimediawidgets

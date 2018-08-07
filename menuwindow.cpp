@@ -16,8 +16,8 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     m_buttonMenuClose->setFlat(true);
     m_iconMenuClose.addFile(m_pathIconMenuClose);
     m_buttonMenuClose->setIcon(m_iconMenuClose);
-    m_buttonMenuClose->setIconSize(QSize(25,25));
-    m_buttonMenuClose->setGeometry(0, 0, 25, 25);
+    m_buttonMenuClose->setIconSize(QSize(36,36));
+    m_buttonMenuClose->setGeometry(0, 0, 36, 36);
 
     m_buttonConnection = new QPushButton(m_menuWindow);
     m_buttonConnection->setFlat(true);
@@ -25,15 +25,15 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     m_iconConnectionOff.addFile(m_pathIconConnectionOff);
     m_buttonConnection->setIcon(m_iconConnectionOff);
     m_buttonConnection->setIconSize(QSize(20,20));
-    m_buttonConnection->setGeometry(45, 5, 20, 20);
+    m_buttonConnection->setGeometry(40, 5, 20, 20);
     m_buttonConnection->setEnabled(false);
 
     m_buttonPower = new QPushButton(m_menuWindow);
     m_buttonPower->setFlat(true);
     m_iconPower.addFile(m_pathIconPower);
     m_buttonPower->setIcon(m_iconPower);
-    m_buttonPower->setIconSize(QSize(20,20));
-    m_buttonPower->setGeometry(70, 5, 20, 20);
+    m_buttonPower->setIconSize(QSize(36,36));
+    m_buttonPower->setGeometry(64, 5, 36, 36);
 
     m_groupPlayer = new QGroupBox("Remote", m_menuWindow);
     m_groupPlayer->setGeometry(5, 30, 90, 200);
@@ -42,31 +42,31 @@ MenuWindow::MenuWindow(MainWindow *parent) : QWidget()
     m_buttonMusicLibrary->setFlat(true);
     m_iconMusicLibrary.addFile(m_pathIconMusicLibrary);
     m_buttonMusicLibrary->setIcon(m_iconMusicLibrary);
-    m_buttonMusicLibrary->setIconSize(QSize(20,20));
-    m_buttonMusicLibrary->setGeometry(60, 80, 20, 20);
+    m_buttonMusicLibrary->setIconSize(QSize(36,36));
+    m_buttonMusicLibrary->setGeometry(52, 60, 36, 36);
     m_buttonMusicLibrary->setEnabled(false);
 
     m_buttonUp = new QPushButton(m_menuWindow);
     m_buttonUp->setFlat(true);
     m_iconSoundUp.addFile(m_pathIconSoundUp);
     m_buttonUp->setIcon(m_iconSoundUp);
-    m_buttonUp->setIconSize(QSize(20,20));
-    m_buttonUp->setGeometry(60, 110, 20, 20);
+    m_buttonUp->setIconSize(QSize(36,36));
+    m_buttonUp->setGeometry(52, 100, 36, 36);
 
     m_buttonSound = new QPushButton(m_menuWindow);
     m_buttonSound->setFlat(true);
     m_iconNomute.addFile(m_pathIconNomute);
     m_iconMute.addFile(m_pathIconMute);
     m_buttonSound->setIcon(m_iconNomute);
-    m_buttonSound->setIconSize(QSize(20,20));
-    m_buttonSound->setGeometry(60, 140, 20, 20);
+    m_buttonSound->setIconSize(QSize(36,36));
+    m_buttonSound->setGeometry(52, 140, 36, 36);
 
     m_buttonDown = new QPushButton(m_menuWindow);
     m_buttonDown->setFlat(true);
     m_iconSoundDown.addFile(m_pathIconSoundDown);
     m_buttonDown->setIcon(m_iconSoundDown);
-    m_buttonDown->setIconSize(QSize(20,20));
-    m_buttonDown->setGeometry(60, 170, 20, 20);
+    m_buttonDown->setIconSize(QSize(36,36));
+    m_buttonDown->setGeometry(52, 180, 36, 36);
 
     m_progressSound = new QProgressBar(m_menuWindow);
     m_progressSound->setGeometry(20, 60, 20, 160);

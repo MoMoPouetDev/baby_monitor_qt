@@ -9,15 +9,15 @@
 
 #include "manager.h"
 
-#define PATH_ICON_MUSIC_LIBRARY "/home/morgan/git/baby_monitor_qt/images/musicLibrary.png"
-#define PATH_ICON_MENU_CLOSE    "/home/morgan/git/baby_monitor_qt/images/menuClose.png"
-#define PATH_ICON_CONNECTION_ON    "/home/morgan/git/baby_monitor_qt/images/connectionOn.png"
-#define PATH_ICON_CONNECTION_OFF    "/home/morgan/git/baby_monitor_qt/images/connectionOff.png"
-#define PATH_ICON_POWER_OFF "/home/morgan/git/baby_monitor_qt/images/powerOff.png"
-#define PATH_ICON_MUTE "/home/morgan/git/baby_monitor_qt/images/soundMute.png"
-#define PATH_ICON_NOMUTE "/home/morgan/git/baby_monitor_qt/images/soundNoMute.png"
-#define PATH_ICON_SOUND_UP "/home/morgan/git/baby_monitor_qt/images/soundUp.png"
-#define PATH_ICON_SOUND_DOWN "/home/morgan/git/baby_monitor_qt/images/soundDown.png"
+#define PATH_ICON_MUSIC_LIBRARY "/home/pi/sourcesQt/pictures/musicLibrary.png"
+#define PATH_ICON_MENU_CLOSE    "/home/pi/sourcesQt/pictures/menuClose.png"
+#define PATH_ICON_CONNECTION_ON    "/home/pi/sourcesQt/pictures/connectionOn.png"
+#define PATH_ICON_CONNECTION_OFF    "/home/pi/sourcesQt/pictures/connectionOff.png"
+#define PATH_ICON_POWER_OFF "/home/pi/sourcesQt/pictures/powerOff.png"
+#define PATH_ICON_MUTE "/home/pi/sourcesQt/pictures/soundMute.png"
+#define PATH_ICON_NOMUTE "/home/pi/sourcesQt/pictures/soundNoMute.png"
+#define PATH_ICON_SOUND_UP "/home/pi/sourcesQt/pictures/soundUp.png"
+#define PATH_ICON_SOUND_DOWN "/home/pi/sourcesQt/pictures/soundDown.png"
 
 #define SOUND_MAX       100
 #define SOUND_MIN       0

@@ -8,12 +8,12 @@
 
 #include "manager.h"
 
-#define PATH_ICON_MUTE "/home/morgan/git/baby_monitor_qt/images/soundMute.png"
-#define PATH_ICON_NOMUTE "/home/morgan/git/baby_monitor_qt/images/soundNoMute.png"
-#define PATH_ICON_SOUND_UP "/home/morgan/git/baby_monitor_qt/images/soundUp.png"
-#define PATH_ICON_SOUND_DOWN "/home/morgan/git/baby_monitor_qt/images/soundDown.png"
-#define PATH_ICON_STOP "/home/morgan/git/baby_monitor_qt/images/stop.png"
-#define PATH_ICON_PLAY "/home/morgan/git/baby_monitor_qt/images/play.png"
+#define PATH_ICON_MUTE "/home/pi/sourcesQt/pictures/soundMute.png"
+#define PATH_ICON_NOMUTE "/home/pi/sourcesQt/pictures/soundNoMute.png"
+#define PATH_ICON_SOUND_UP "/home/pi/sourcesQt/pictures/soundUp.png"
+#define PATH_ICON_SOUND_DOWN "/home/pi/sourcesQt/pictures/soundDown.png"
+#define PATH_ICON_STOP "/home/pi/sourcesQt/pictures/stop.png"
+#define PATH_ICON_PLAY "/home/pi/sourcesQt/pictures/play.png"
 
 class MainWindow;
 class MenuWindow;

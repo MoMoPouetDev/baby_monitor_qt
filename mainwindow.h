@@ -19,8 +19,9 @@
 #include "menuwindow.h"
 #include "manager.h"
 
-#define PATH_ICON_MENU_OPEN    "/home/morgan/git/baby_monitor_qt/images/menuOpen.png"
-#define PATH_VIDEO_URL  "/home/morgan/test1.mp4"
+#define PATH_ICON_MENU_OPEN    "/home/pi/sourcesQt/pictures/menuOpen.png"
+#define PATH_VIDEO_URL  "/home/pi/sourcesQt/video/test1.mp4"
+#define PATH_URI    "http://192.168.1.41:8000/++hls?cameraNum=0"
 
 #define MIN_VALUE_LOW   20
 #define MAX_VALUE_LOW   60

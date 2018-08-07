@@ -22,7 +22,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
 
     m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     m_video = new QVideoWidget(this);
-    m_player->setMedia(QUrl::fromLocalFile(PATH_VIDEO_URL));
+    //m_player->setMedia(QUrl::fromLocalFile(PATH_VIDEO_URL));
+    m_player->setMedia(QUrl::fromUserInput(PATH_URI));
     m_player->setVideoOutput(m_video);
     m_video->setFixedSize(800, 480);
     m_player->play();
@@ -31,8 +32,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_buttonMenuOpen = new QPushButton(this);
     m_iconMenuOpen.addFile(m_pathIconMenuOpen);
     m_buttonMenuOpen->setIcon(m_iconMenuOpen);
-    m_buttonMenuOpen->setIconSize(QSize(25,25));
-    m_buttonMenuOpen->setGeometry(0, 0, 25, 25);
+    m_buttonMenuOpen->setIconSize(QSize(36,36));
+    m_buttonMenuOpen->setGeometry(0, 0, 36, 36);
 
     m_progressLow = new QProgressBar(this);
     m_progressLow->setGeometry(750, 200, 30, 240);
@@ -277,7 +278,7 @@ QVector<qreal> getBufferLevels(const T *buffer, int frames, int channels)
 
 void MainWindow::setShow()
 {
-    this->show();
+    this->showFullScreen();
 }
 
 int MainWindow::getVolumeValuePlayer()
