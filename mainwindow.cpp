@@ -23,7 +23,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     m_video = new QVideoWidget(this);
     //m_player->setMedia(QUrl::fromLocalFile(PATH_VIDEO_URL));
-    m_player->setMedia(QUrl::fromUserInput(PATH_URI));
+    QUrl url(PATH_URI);
+    m_player->setMedia(QUrl("rtsp://192.168.1.13:80/live/picam"));
     m_player->setVideoOutput(m_video);
     m_video->setFixedSize(800, 480);
     m_player->play();

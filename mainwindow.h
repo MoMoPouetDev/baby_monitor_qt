@@ -21,7 +21,7 @@
 
 #define PATH_ICON_MENU_OPEN    "/home/pi/sourcesQt/pictures/menuOpen.png"
 #define PATH_VIDEO_URL  "/home/pi/sourcesQt/video/test1.mp4"
-#define PATH_URI    "http://192.168.1.41:8000/++hls?cameraNum=0"
+#define PATH_URI    "rtsp://192.168.1.13:80/live/picam"
 
 #define MIN_VALUE_LOW   20
 #define MAX_VALUE_LOW   60

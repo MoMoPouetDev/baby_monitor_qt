@@ -6,7 +6,7 @@ ClientTcp::ClientTcp() : QObject()
 {
     m_socketServer = new QTcpSocket(this);
 
-    this->connection();
+    //this->connection();
 
     QObject::connect(m_socketServer, SIGNAL(readyRead()), this, SLOT(receivedData()));
     QObject::connect(m_socketServer, SIGNAL(connected()), this, SLOT(clientConnected()));
@@ -33,7 +33,7 @@ void ClientTcp::connection()
 {
     qDebug() << "Connecting...";
     m_socketServer->abort();
-    m_socketServer->connectToHost("10.212.112.84", 50885);
+    m_socketServer->connectToHost("192.168.1.13", 50885);
 }
 
 void ClientTcp::clientConnected()
