@@ -14,6 +14,7 @@ Manager::Manager() : QObject()
 
     m_client = new ClientTcp;
     emit m_client->isReadyMenu(m_menuWindow);
+    emit m_client->isReadyWindow(m_mainWindow);
     emit m_menuMusicWindow->isReadyClient(m_client);
     emit m_mainWindow->isReadyClient(m_client);
 

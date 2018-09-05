@@ -6,7 +6,7 @@ ClientTcp::ClientTcp() : QObject()
 {
     m_socketServer = new QTcpSocket(this);
 
-    //this->connection();
+    this->connection();
 
     QObject::connect(m_socketServer, SIGNAL(readyRead()), this, SLOT(receivedData()));
     QObject::connect(m_socketServer, SIGNAL(connected()), this, SLOT(clientConnected()));
@@ -15,6 +15,7 @@ ClientTcp::ClientTcp() : QObject()
     QObject::connect(this, SIGNAL(connectionStatus(bool)), this, SLOT(setConnectionStatus(bool)));
     QObject::connect(this, SIGNAL(isReadyMenu(MenuWindow*)), this, SLOT(getThisMenuWindow(MenuWindow*)));
     QObject::connect(this, SIGNAL(isReadyDecoder(Decoder*)), this, SLOT(getThisDecoder(Decoder*)));
+    QObject::connect(this, SIGNAL(isReadyWindow(MainWindow*)), this, SLOT(getThisWindow(MainWindow*)));
 
     m_packetSize = 0;
 }
@@ -110,6 +111,7 @@ void ClientTcp::errorSocket(QAbstractSocket::SocketError error)
 void ClientTcp::setConnectionStatus(bool status)
 {
     m_menuWindow->setConnectionIcon(status);
+    emit m_mainWindow->isClientConnected(status);
 }
 
 void ClientTcp::getThisMenuWindow(MenuWindow *menu)
@@ -120,4 +122,9 @@ void ClientTcp::getThisMenuWindow(MenuWindow *menu)
 void ClientTcp::getThisDecoder(Decoder *decoder)
 {
     m_decoder = decoder;
+}
+
+void ClientTcp::getThisWindow(MainWindow *mainWindow)
+{
+    m_mainWindow = mainWindow;
 }

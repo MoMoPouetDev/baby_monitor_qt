@@ -23,6 +23,8 @@
 #define PATH_VIDEO_URL  "/home/pi/sourcesQt/video/test1.mp4"
 #define PATH_URI    "rtsp://192.168.1.13:80/live/picam"
 
+#define WIDTH_SIZE 800
+#define HEIGHT_SIZE 480
 #define MIN_VALUE_LOW   20
 #define MAX_VALUE_LOW   60
 #define MIN_VALUE_MIDDLE    60
@@ -56,10 +58,12 @@ class MainWindow : public QWidget
     void getThisMenuWindow(MenuWindow*);
     void getThisClient(ClientTcp*);
     void displayErrorMessage();
+    void clientConnected(bool);
 
     signals:
     void isReadyMenu(MenuWindow*);
     void isReadyClient(ClientTcp*);
+    void isClientConnected(bool);
 
     private:
     Manager *m_manager;
