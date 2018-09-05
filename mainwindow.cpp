@@ -22,10 +22,12 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
 
     m_player = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     m_video = new QVideoWidget(this);
-    //m_player->setMedia(QUrl::fromLocalFile(PATH_VIDEO_URL));
-    QUrl url(PATH_URI);
-    m_player->setMedia(QUrl("rtsp://192.168.1.13:80/live/picam"));
     m_player->setVideoOutput(m_video);
+    //QProcess *omxplayer = new QProcess(m_video);
+    //omxplayer->start("omxplayer rtsp://192.168.1.13:80/live/picam");
+    //m_player->setMedia(QUrl::fromLocalFile(PATH_VIDEO_URL));
+    //QUrl url(PATH_URI);
+    m_player->setMedia(QUrl("rtsp://192.168.1.13:80/live/picam"));
     m_video->setFixedSize(800, 480);
     m_player->play();
     m_player->setVolume(50);
@@ -68,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget()
     QObject::connect(m_player, SIGNAL(mutedChanged(bool)), this, SLOT(muteVolumeBar(bool)));
     QObject::connect(this, SIGNAL(isReadyMenu(MenuWindow*)), this, SLOT(getThisMenuWindow(MenuWindow*)));
     QObject::connect(this, SIGNAL(isReadyClient(ClientTcp*)), this, SLOT(getThisClient(ClientTcp*)));
+    connect(m_player, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error), this, &MainWindow::displayErrorMessage);
 
     m_process = new QProcess(this);
 
@@ -98,6 +101,12 @@ MainWindow::~MainWindow()
 MainWindow* MainWindow::getThisMainWindow()
 {
     return this;
+}
+
+void MainWindow::displayErrorMessage()
+{
+    qDebug() << "error";
+    qDebug() << m_player->errorString();
 }
 
 void MainWindow::getThisMenuWindow(MenuWindow *menu)

@@ -55,6 +55,7 @@ class MainWindow : public QWidget
     void muteVolumeBar(bool);
     void getThisMenuWindow(MenuWindow*);
     void getThisClient(ClientTcp*);
+    void displayErrorMessage();
 
     signals:
     void isReadyMenu(MenuWindow*);
